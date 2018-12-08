@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="¶一点小吐槽 有时候上网查一点资料，愣是得看个半天，各种名词扑面而来，好像自己在这方面一直都是在打酱油白活了似的。 其实有的时候对的往往是简单的，一目了然的，如果你查资料瞬间各种名词漫天飞舞，那你可以再多找几篇文章去看看了。 百度能查到的资料百分之七十是一模一样的都是互相cv，其他百分之二十就都是抄的手册里的，还有百分之十呢是自己写的，但这百分之十里面吧，又有百分之50喜欢丢名词(听说这样比较有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈php的观察者模式-PHP">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/浅谈php的观察者模式-PHP/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="¶一点小吐槽 有时候上网查一点资料，愣是得看个半天，各种名词扑面而来，好像自己在这方面一直都是在打酱油白活了似的。 其实有的时候对的往往是简单的，一目了然的，如果你查资料瞬间各种名词漫天飞舞，那你可以再多找几篇文章去看看了。 百度能查到的资料百分之七十是一模一样的都是互相cv，其他百分之二十就都是抄的手册里的，还有百分之十呢是自己写的，但这百分之十里面吧，又有百分之50喜欢丢名词(听说这样比较有">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-facd889e73bdd12f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2018-12-08T15:34:02.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈php的观察者模式-PHP">
+<meta name="twitter:description" content="¶一点小吐槽 有时候上网查一点资料，愣是得看个半天，各种名词扑面而来，好像自己在这方面一直都是在打酱油白活了似的。 其实有的时候对的往往是简单的，一目了然的，如果你查资料瞬间各种名词漫天飞舞，那你可以再多找几篇文章去看看了。 百度能查到的资料百分之七十是一模一样的都是互相cv，其他百分之二十就都是抄的手册里的，还有百分之十呢是自己写的，但这百分之十里面吧，又有百分之50喜欢丢名词(听说这样比较有">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-facd889e73bdd12f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/08/浅谈php的观察者模式-PHP/">
+
+
+
+
+
+  <title>浅谈php的观察者模式-PHP | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/浅谈php的观察者模式-PHP/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅谈php的观察者模式-PHP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:00:25+08:00">
+                2018-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-facd889e73bdd12f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="花花"></p>
+<h3 id="一点小吐槽"><a class="header-anchor" href="#一点小吐槽">¶</a><strong>一点小吐槽</strong></h3>
+<p>有时候上网查一点资料，愣是得看个半天，各种名词扑面而来，好像自己在这方面一直都是在打酱油白活了似的。<br><br>
+其实有的时候对的往往是简单的，一目了然的，如果你查资料瞬间各种名词漫天飞舞，那你可以再多找几篇文章去看看了。<br><br>
+百度能查到的资料百分之七十是一模一样的都是互相cv，其他百分之二十就都是抄的手册里的，还有百分之十呢是自己写的，但这百分之十里面吧，又有百分之50喜欢丢名词(听说这样比较有big)，还有百分之四十说得不清不楚像是生怕别人会知道了这个知识点了似的，还有百分之五说得清清楚楚简简单单。</p>
+<blockquote>
+<p><strong>还有百分之五就是我这种，什么都不懂又喜欢瞎说误人子弟瞎哔哔的。</strong></p>
+</blockquote>
+<p>在实际应用中，我们能见到的PHP的主要设计模式大概是九种。<br><br>
+其中工厂，单例，观察者模式也是用得比较多的三种模式，所有模式都围绕几个核心转着。<br><br>
+模式让代码更优雅，更容易维护，能更好的应对需求的改变，让代码往高内聚低耦合的道路上更进一步(看项目而言，没有必要一味的追求高内聚低耦合)。</p>
+<hr>
+<h3 id="将会遇到的事"><a class="header-anchor" href="#将会遇到的事">¶</a><strong>将会遇到的事</strong></h3>
+<p>撇开观察者模式这几个字不谈，来谈谈可能遇到的事吧。<br></p>
+<p>一个交友网站，你被安排写一个登录模块，很快你就写完了，过了几天，项目经理说，需要用户一登陆这条用户的信息里面的登录时间字段做一下修改，上次登录的时间这个字段也为当前时间。<br></p>
+<p>你三下五除二又给写完了，不就是在登录的时候操作数据库嘛。<br></p>
+<p>过了几天，项目经理说了，需要用户一登陆，就把我们网站的最新活动推送给用户，然后又在操作登录时间字段的代码下面又加了几行。<br><br>
+过了几天经理又说了，用户一登陆，需要给他推送他平常最中意的对象类型，弄十个给他，看他丫的充不充会员，然后又在公司推送活动的代码块下调用别人的模块，获得这个用户的喜好，然后再写推送。<br><br>
+经理又说了，总觉得不够活跃，要不这样，你写块代码，你就造个假，用户一登陆你就让附近的人给他打个招呼。。。。。。<br><br>
+后续可能还有更多，而这只是登录模块，此时这个方法已经是一团乱麻。<br><br>
+半个月后，再把这块代码给你看，或者让你做做修改，加加功能，改改需求什么的，你会鄙视道这哪个傻叉写得玩意啊，都啥啥啥啊这都，随便改一小块整个登录都用不了了。</p>
+<p><strong>这是最蠢的写法，好一点就是做成插件的形式，每当有需求打包成一个类，一个供外部调用的方法，执行这个方法就够了，登录模块也就只有几行代码了，且不会影响上下文。还有一种办法就是利用php自带的观察者模式。</strong></p>
+<h3 id="引出思想"><a class="header-anchor" href="#引出思想">¶</a><strong>引出思想</strong></h3>
+<p>回头再来看上面这段假设，可以至少得出一个结论，<strong>所有需求都是围绕着登录成功后来做的</strong>，且每一个动作都相互独立,登陆后要做很多的事情。<br><br>
+再把距离拉远一点，可以看出只要登录成功，部分业务就要开始运行。<br><br>
+在这里我们先可以把这些需求看作是小人儿，用户只要一进门，就会有人喊道有人进来了，该敲锣的敲锣该打鼓的打鼓。<br><br>
+<em><em>其实这就是观察者模式，只要被观察者作出了响应的改变，观察者们就会有相应的动作。</em></em><br><br>
+若观察者模式以这种方式说出来，我想没有几个人会觉得晦涩难懂吧。<br>
+但是缺少了big，<strong>这不是一个’程序员该有的big’</strong>，这听起来也太不专业了。</p>
+<h3 id="代码"><a class="header-anchor" href="#代码">¶</a><strong>代码</strong></h3>
+<p>php提供的两个接口，一个被观察者接口SplSubject，一个或多个观察者接口SPLObserver,和一个可以储存对象的类SplObjectStorage。<br><br>
+被观察者有三个方法，需要实现这三个方法。<br></p>
+<blockquote>
+<ul>
+<li>一个attach可以理解为添加一个观察者。</li>
+<li>detach可以理解为删除掉一个观察者。</li>
+<li>一个notify里面做循环执行被观察者的update方法(被观察者被存储在splobjectstorage类里面)，update方法把本类作为参数传进去。</li>
+</ul>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> $observers= <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;observers= <span class="keyword">new</span> SplObjectStorage();<span class="comment">//这里创建一个存储被观察者的对象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//单纯做登录操作    </span></span><br><span class="line">    <span class="keyword">$this</span>-&gt;notify();<span class="comment">//通知被观察者</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">attach</span><span class="params">(SplObserver$observer)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;observers-&gt;attach($observer);<span class="comment">//添加进一个被观察者</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">detach</span><span class="params">(SplObserver$observer)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;observers-&gt;detach($observer);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">notify</span><span class="params">()</span>//在这个方法里循环调用观察者的<span class="title">update</span>方法</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;observers-&gt;rewind();<span class="comment">//将内部指针指向开始处</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">$this</span>-&gt;observers-&gt;valid()) &#123;</span><br><span class="line">        $observer= <span class="keyword">$this</span>-&gt;observers-&gt;current();<span class="comment">//获取当前对象</span></span><br><span class="line">        $observer-&gt;update(<span class="keyword">$this</span>);<span class="keyword">$this</span>-&gt;observers-&gt;next();<span class="comment">//将指针往下走一位</span></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PushUserimplements</span> <span class="title">SplObserver</span></span>&#123;<span class="comment">//用户推送-观察者</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(SplSubject$subject)</span>//穿进来一个被观察者</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//写自己的业务逻辑    </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PushNewsimplements</span> <span class="title">SplObserver</span></span>&#123;<span class="comment">//新闻推送-观察者</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(SplSubject$subject)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="comment">//写自己的业务逻辑    </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$user= <span class="keyword">new</span> Login();<span class="comment">//创建一个实现了被观察者的接口类</span></span><br><span class="line">$user-&gt;attach(<span class="keyword">new</span> PushNews());<span class="comment">//传进去一个实现了观察者的接口类</span></span><br><span class="line">$user-&gt;attach(<span class="keyword">new</span> PushUser());</span><br><span class="line">$user-&gt;login();</span><br></pre></td></tr></table></figure>
+<p>执行完自己的登录逻辑后，会调用自身的notify,此时SplObjectStorage类里已存储了两个对象，notify中调用观察者的update方法。<br></p>
+<p>使用Phpstorm会让你的码字速度变快很多哦。</p>
+<p>观察者模式适用场景:</p>
+<p>当一个抽象模型有两个方面，其中一个方面依赖于另一个方面。</p>
+<p>当对一个对象的改变需要同时改变其它对象，而不知道具体有多少个对象待改变。</p>
+<p>当一个对象必须通知其它对象，而它又不能假定其它对象是谁。换句话说，你不希望这些对象是紧密耦合的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/08/静态及单例-PHP/" rel="next" title="静态及单例-PHP">
+                <i class="fa fa-chevron-left"></i> 静态及单例-PHP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一点小吐槽"><span class="nav-number">1.</span> <span class="nav-text">¶一点小吐槽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将会遇到的事"><span class="nav-number">2.</span> <span class="nav-text">¶将会遇到的事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引出思想"><span class="nav-number">3.</span> <span class="nav-text">¶引出思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">4.</span> <span class="nav-text">¶代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
