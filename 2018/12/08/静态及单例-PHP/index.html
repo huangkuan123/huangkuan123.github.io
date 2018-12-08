@@ -79,17 +79,19 @@
 
 
 
-<meta name="description" content="¶第一次自建博客 那次建博客的原因有二： 1.买了个域名，发现那时候虚拟空间很便宜,我还以为捡到宝了(现在也很便宜)  这就是穷到丧失理智,为第二次重建博客埋下了伏笔   2.练练手，那个时候在武汉，算刚入门，第一份工作做得很踏实， 学到了很多，也忘了很多， 所以想将一些思考和知识点记录下来  3.以写促学，还加深了自己的记忆  上线的日子我到现在还记得,发表的第一篇文章就一句话  2016年6月">
+<meta name="description" content="¶静态变量  当你声明一个普通局部变量，在函数中调用时会在内存中申请一块空间，函数结束后，返回一个值，空间被清除。  而当你申明一个静态变量时，将这个变量在函数中运算改变以后，这个静态变量不会从内存中消失，保留的值是进行运算改变后的值。静态变量应用范围比较广，可以避免多次链接。 下面有一个thinkphp3.2版本的内置函数: 12345public function C($k,$v)&amp;#123">
 <meta property="og:type" content="article">
-<meta property="og:title" content="三换博客史">
-<meta property="og:url" content="http://yoursite.com/2018/12/08/三换博客史/index.html">
+<meta property="og:title" content="静态及单例-PHP">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/静态及单例-PHP/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="¶第一次自建博客 那次建博客的原因有二： 1.买了个域名，发现那时候虚拟空间很便宜,我还以为捡到宝了(现在也很便宜)  这就是穷到丧失理智,为第二次重建博客埋下了伏笔   2.练练手，那个时候在武汉，算刚入门，第一份工作做得很踏实， 学到了很多，也忘了很多， 所以想将一些思考和知识点记录下来  3.以写促学，还加深了自己的记忆  上线的日子我到现在还记得,发表的第一篇文章就一句话  2016年6月">
+<meta property="og:description" content="¶静态变量  当你声明一个普通局部变量，在函数中调用时会在内存中申请一块空间，函数结束后，返回一个值，空间被清除。  而当你申明一个静态变量时，将这个变量在函数中运算改变以后，这个静态变量不会从内存中消失，保留的值是进行运算改变后的值。静态变量应用范围比较广，可以避免多次链接。 下面有一个thinkphp3.2版本的内置函数: 12345public function C($k,$v)&amp;#123">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-08T09:52:57.920Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-b85a81a1d1ffc011.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2018-12-08T14:42:17.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="三换博客史">
-<meta name="twitter:description" content="¶第一次自建博客 那次建博客的原因有二： 1.买了个域名，发现那时候虚拟空间很便宜,我还以为捡到宝了(现在也很便宜)  这就是穷到丧失理智,为第二次重建博客埋下了伏笔   2.练练手，那个时候在武汉，算刚入门，第一份工作做得很踏实， 学到了很多，也忘了很多， 所以想将一些思考和知识点记录下来  3.以写促学，还加深了自己的记忆  上线的日子我到现在还记得,发表的第一篇文章就一句话  2016年6月">
+<meta name="twitter:title" content="静态及单例-PHP">
+<meta name="twitter:description" content="¶静态变量  当你声明一个普通局部变量，在函数中调用时会在内存中申请一块空间，函数结束后，返回一个值，空间被清除。  而当你申明一个静态变量时，将这个变量在函数中运算改变以后，这个静态变量不会从内存中消失，保留的值是进行运算改变后的值。静态变量应用范围比较广，可以避免多次链接。 下面有一个thinkphp3.2版本的内置函数: 12345public function C($k,$v)&amp;#123">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-b85a81a1d1ffc011.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
 
@@ -119,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/08/三换博客史/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/08/静态及单例-PHP/">
 
 
 
 
 
-  <title>三换博客史 | 哔,韭菜园到了</title>
+  <title>静态及单例-PHP | 哔,韭菜园到了</title>
   
 
 
@@ -262,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/三换博客史/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/静态及单例-PHP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reset">
@@ -279,7 +281,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">三换博客史</h1>
+          <h1 class="post-title" itemprop="name headline">静态及单例-PHP</h1>
         
 
         <div class="post-meta">
@@ -291,7 +293,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T16:53:09+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T21:39:09+08:00">
                 2018-12-08
               </time>
             
@@ -301,28 +303,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">杂谈</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -351,35 +331,21 @@
       
 
       
-        <h2 id="第一次自建博客"><a class="header-anchor" href="#第一次自建博客">¶</a><strong>第一次自建博客</strong></h2>
-<p>那次建博客的原因有二：<br><br>
-1.买了个域名，发现那时候虚拟空间很便宜,我还以为捡到宝了(现在也很便宜)</p>
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-b85a81a1d1ffc011.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="图片"></p>
+<h3 id="静态变量"><a class="header-anchor" href="#静态变量">¶</a><strong>静态变量</strong></h3>
 <blockquote>
-<p>这就是穷到丧失理智,为第二次重建博客埋下了伏笔 <br></p>
+<p>当你声明一个普通局部变量，在函数中调用时会在内存中申请一块空间，函数结束后，返回一个值，空间被清除。<br></p>
 </blockquote>
-<p>2.练练手，那个时候在武汉，算刚入门，第一份工作做得很踏实，<br>
-学到了很多，也忘了很多，<br>
-所以想将一些思考和知识点记录下来 <br></p>
-<p>3.以写促学，还加深了自己的记忆 <br></p>
-<p>上线的日子我到现在还记得,发表的第一篇文章就一句话</p>
-<blockquote>
-<p>2016年6月23日博客站正式上线了.</p>
-</blockquote>
-<p>那个时候还很流行用thinkphp3.2,公司也是用的这个框架,所以就用tp3.2+bs仿了一个wp的模板做出来的，还用js做了个别踩白块的小游戏。<br>
-觉得很骄傲啊，就把我的博客地址(别踩白块的地址)发到群里去了，我还记得左边是游戏区，右边是排行榜，发到群里去后，排行榜就被刷了!<br>
-这是没办法的事，要想不被刷是不可能的，灰溜溜的就把游戏下线了。<br><br>
-后来公司做项目都是用的laravel，为了练手适应接下来的项目，又把博客给重构了，以前的代码连看都不想看一眼。</p>
-<h2 id="一而再的折腾"><a class="header-anchor" href="#一而再的折腾">¶</a><strong>一而再的折腾</strong></h2>
-<p>这次重建博客已经到了 <em>2018-05-20</em> ，原因也有两个:<br><br>
-1.虚拟空间快到期了,不想续费了</p>
-<blockquote>
-<p>其实就是穷 😄</p>
-</blockquote>
-<p>2.客户端不够友好,有时候电脑不在身边，我想用手机写一些东西<br></p>
-<p>就这样，我把代码和数据给 down 下来了，开始一篇一篇的转移到简书上。</p>
-<h2 id="这次"><a class="header-anchor" href="#这次">¶</a><strong>这次</strong></h2>
-<p>我想，我也希望，这是最后一次。我就觉得这个便宜，又好看，好看的博客，会让我有想写的欲望。<br><br>
-一个漂亮的博客于我来说，就像一个很漂亮的容器，它让我想往里面注入一些好东西，一定要好东西，因为只有垃圾桶里面才装垃圾。</p>
+<p>而当你申明一个静态变量时，将这个变量在函数中运算改变以后，这个静态变量不会从内存中消失，保留的值是进行运算改变后的值。静态变量应用范围比较广，可以避免多次链接。<br><br>
+下面有一个thinkphp3.2版本的内置函数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">C</span><span class="params">($k,$v)</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> $cfg = <span class="keyword">array</span>();</span><br><span class="line">    $cfg[$k] = $v;</span><br><span class="line">    <span class="keyword">return</span> $cfg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="静态属性-静态方法"><a class="header-anchor" href="#静态属性-静态方法">¶</a><em>静态属性，静态方法</em></h3>
+<p><em>不依赖于对象即可调用某个类里面的属性或方法，<br>
+这个类里面的属性和方法前加 static。</em><br><br>
+反正我是没用过其他的，其中一个单例模式 还是有用到。传说中可以用作接口，还有说直接调用类里面的方法和属性，比实例化一个后再调用速度更快的，在我看来这种速度比较一文不值。</p>
+<p>单例模式的意义在于控制对象只能被实例化一次，并且是被自身new，防止外部new。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Link</span></span>&#123;    </span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">static</span> $link = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span>&#123; <span class="comment">//被自身调用的时候会触发 </span></span><br><span class="line">         <span class="keyword">$this</span>-&gt;link = mysql_connect(<span class="string">'localhost'</span>,<span class="string">'root'</span>,<span class="string">''</span>);    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">private</span> fucntion __clone()&#123;    &#125;    <span class="comment">//外部克隆自动触发这个方法，这个方法是私有，会报错。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getlink</span><span class="params">()</span></span>&#123;   <span class="comment">//没有链接资源就new自身创建一个资源，已经有的话直接返回。</span></span><br><span class="line">            <span class="keyword">if</span>($link==<span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">self</span> :: link = <span class="keyword">new</span> <span class="keyword">self</span>();</span><br><span class="line">    &#125;        </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>::link;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用到了静态方法和静态变量，静态方法不用再被new了，直接调用Link::getlink(),就会返回一个链接资源，保存起来返回的值就可以直接使用了。</p>
 
       
     </div>
@@ -433,15 +399,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/12/08/三换博客史/" rel="next" title="三换博客史">
+                <i class="fa fa-chevron-left"></i> 三换博客史
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/08/静态及单例-PHP/" rel="prev" title="静态及单例-PHP">
-                静态及单例-PHP <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -566,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一次自建博客"><span class="nav-number">1.</span> <span class="nav-text">¶第一次自建博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一而再的折腾"><span class="nav-number">2.</span> <span class="nav-text">¶一而再的折腾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这次"><span class="nav-number">3.</span> <span class="nav-text">¶这次</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态变量"><span class="nav-number">1.</span> <span class="nav-text">¶静态变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态属性-静态方法"><span class="nav-number">2.</span> <span class="nav-text">¶静态属性，静态方法</span></a></li></ol></div>
             
 
           </div>
