@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="php中的类和对象到底是怎样的一个关系？ 或者说对象到底由什么而组成？ 什么叫类的延迟绑定，怎么去解决？ 以前的认知算比较浅的，最近翻阅了一些文章和书籍，让我对类和对象的理解更深了一层。（可能是因为闲吧）  ¶对象 类是方法和属性的集合，那对象是什么？  如果在以前问我，我会说对象是类的实例化，现在我会说对象是一堆属性组成。  对象在底层到底是怎么实现的呢？对象在底层的实现是采取属性数组+方法数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对象的本质，延迟绑定">
+<meta property="og:url" content="http://yoursite.com/2018/12/09/对象的本质，延迟绑定/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="php中的类和对象到底是怎样的一个关系？ 或者说对象到底由什么而组成？ 什么叫类的延迟绑定，怎么去解决？ 以前的认知算比较浅的，最近翻阅了一些文章和书籍，让我对类和对象的理解更深了一层。（可能是因为闲吧）  ¶对象 类是方法和属性的集合，那对象是什么？  如果在以前问我，我会说对象是类的实例化，现在我会说对象是一堆属性组成。  对象在底层到底是怎么实现的呢？对象在底层的实现是采取属性数组+方法数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-25d93078806f890e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-1abbc7695b876cc2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2018-12-09T09:28:23.989Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对象的本质，延迟绑定">
+<meta name="twitter:description" content="php中的类和对象到底是怎样的一个关系？ 或者说对象到底由什么而组成？ 什么叫类的延迟绑定，怎么去解决？ 以前的认知算比较浅的，最近翻阅了一些文章和书籍，让我对类和对象的理解更深了一层。（可能是因为闲吧）  ¶对象 类是方法和属性的集合，那对象是什么？  如果在以前问我，我会说对象是类的实例化，现在我会说对象是一堆属性组成。  对象在底层到底是怎么实现的呢？对象在底层的实现是采取属性数组+方法数">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-25d93078806f890e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/09/对象的本质，延迟绑定/">
+
+
+
+
+
+  <title>对象的本质，延迟绑定 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/对象的本质，延迟绑定/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">对象的本质，延迟绑定</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T17:05:14+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-25d93078806f890e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+<p>php中的类和对象到底是怎样的一个关系？<br><br>
+或者说对象到底由什么而组成？<br><br>
+什么叫类的延迟绑定，怎么去解决？<br><br>
+以前的认知算比较浅的，最近翻阅了一些文章和书籍，让我对类和对象的理解更深了一层。（可能是因为闲吧）</p>
+<hr>
+<h2 id="对象"><a class="header-anchor" href="#对象">¶</a><strong>对象</strong></h2>
+<p>类是方法和属性的集合，那对象是什么？<br></p>
+<blockquote>
+<p>如果在以前问我，我会说对象是类的实例化，现在我会说对象是一堆属性组成。</p>
+</blockquote>
+<p>对象在底层到底是怎么实现的呢？对象在底层的实现是采取属性数组+方法数组来实现的。<br><br>
+对象在zend中的定义是使用了一种zend_object_value结构体来存储的，这个结构体包含了三种玩意。<br><br>
+第一种是一个指针，也就是说明这个对象由哪个类实现出来的，这个类在哪里。<br><br>
+第二种玩意就是这个对象的属性。<br><br>
+第三个东西是guards,阻止递归调用的。<br><br>
+那对象里面只有这些东西，那对象的方法在哪里，<strong>对象的方法不会存在对象里面，要使用对象的方法，实际上是通过指针找到这个类，再用这个类里面的方法来执行的</strong>。<br><br>
+要验证这种说法，可以通过序列化serialize一个对象，就可以进行观察了。<br><br>
+前几天听见有人说数组的本质是对象，我想他搞错了，他认为一切都是对象这个没错，但是这只是可以以思维认为它是个对象，但本质是不会变的，我觉得他学岔道了。<br></p>
+<blockquote>
+<p>一切事物都可以抽象出来为一个类，当你为这个类赋予不同的属性时，就会生产对象，但是这仅仅只是可以将事物抽象出来，而不是本质。<br></p>
+</blockquote>
+<p>就如上面所说，对象是由一个类指针和属性数组加一个guards。<br><br>
+那怎么证明类属性是个数组呢，<br>
+其实也可以将一个数组serialize序列化一下，就能看出相同和不同了。</p>
+<h2 id="延迟绑定"><a class="header-anchor" href="#延迟绑定">¶</a><strong>延迟绑定</strong></h2>
+<p>延迟绑定是什么？其实理解以上说的对象到底是什么后，再来看延迟绑定，会理解得更深一些。<br><br>
+设想一段场景，你和你老爸都有个习惯，就是吃完饭都得喝点东西来解渴，你老爸爱喝茶，你爱喝牛奶。<br><br>
+下面通过一段小代码说明延迟绑定。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $type = <span class="string">'father'</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'饭吃完了'</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">self</span>::drink();</span><br><span class="line">    &#125;                </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">drink</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;                      </span><br><span class="line">        <span class="keyword">return</span> <span class="string">'父亲想喝茶'</span>;               </span><br><span class="line">    &#125;</span><br><span class="line">&#125;        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;<span class="comment">//儿子不想喝茶，就想喝奶，于是重写了drink方法</span></span><br><span class="line">    <span class="keyword">public</span> $type = <span class="string">'son'</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">drink</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;                        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">'儿子想喝奶'</span>;                </span><br><span class="line">    &#125;        </span><br><span class="line">&#125;        </span><br><span class="line">$son = <span class="keyword">new</span> Son;</span><br><span class="line">$son-&gt;eat();</span><br></pre></td></tr></table></figure>
+<p>到这里请问输出什么，按道理来讲是不是应该输出’饭吃完了儿子想喝奶啊’,因为drink方法被重写了嘛。<br><br>
+但实际上还是’父亲想喝茶’,这是为什么呢，这个现象叫延迟绑定，解决办法很简单，就是不用self,改为static就行了。<br><br>
+static在这里表示实际调用者(static关键字在不同的地方有不同的含义)。(2018-12-9,laravel框架大量利用static实际调用者特性解耦)</p>
+<p>好了，我来试着探究一下为什么会出现这个问题，首先将子类对象和父类对象全部序列化，观察得到子类对象于父类对象的区别只在于指针和属性不同。<br><br>
+当子类对象调用eat方法时，程序沿着指针找到了Son这个类寻找eat方法，但是并没有找到。<br><br>
+发现这个类是一个子类，于是继续往上找，找到父类的时候找到了eat方法，调用。<br><br>
+echo完吃饭后，此时程序还在父类中执行eat方法，下面的指令是调用本类的drink方法，然而现在指针还在父类，所以调用的还是父类的drink方法，而不是子类重写后的drink方法了。</p>
+<h2 id="2017-02-05对该博文进行勘误"><a class="header-anchor" href="#2017-02-05对该博文进行勘误">¶</a><strong>2017-02-05对该博文进行勘误</strong></h2>
+<p><img src="https://upload-images.jianshu.io/upload_images/7027304-1abbc7695b876cc2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+<p>近期翻阅了一些资料，附上链接:<br>
+<a href="https://secure.php.net/manual/zh/language.oop5.references.php" target="_blank" rel="noopener">https://secure.php.net/manual/zh/language.oop5.references.php</a></p>
+<hr>
+<p>发现与官方文档有出入，之前写那篇博文的时候，是看的一本叫作PHP核心技术与最佳实践的书，然后这本书的出版日期是2012年的。<br><br>
+然后近期翻阅其他关于php底层的一些东西的时候提到了对象，对对象的解释与这本书的解释不一样。<br><br>
+最后找到官方发现我之前看的那本书的一些知识已经过期了。现在来讲讲至少是php5的对象到底是什么了。<br>
+(现在已经8102了，书已经买回来了,有空再研究一下对象和变量)<br>
+<br><br>
+官方文档这么描述的:<br></p>
+<blockquote>
+<p>php的引用是别名，就是两个不同的变量名字指向相同的内容。<br>
+在php5，一个对象变量已经不再保存整个对象的值。<br>
+只是保存一个标识符来访问真正的对象内容。<br>
+当对象作为参数传递，作为结果返回，或者赋值给另外一个变量，<br>
+另外一个变量跟原来的不是引用的关系，<br>
+只是他们都保存着同一个标识符的拷贝，<br>
+这个标识符指向同一个对象的真正内容。</p>
+</blockquote>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">zend_object_value</span> &#123;</span></span><br><span class="line">    zend_object_handle handle; #无符号整数，这里保存的是一个指针，就是官网说的标识符，指向对象的属性</span><br><span class="line">    zend_object_handlers *handlers;#这个可以理解为这个对象所属于的类(主要是里面的方法)</span><br><span class="line">    &#125; zend_object_value;</span><br></pre></td></tr></table></figure>
+<p>所以，<br><br>
+在php5 的对象编程经常提到的一个关键点是“默认情况下对象是通过引用传递的”。<br><br>
+但其实这不是完全正确的。下面通过一例子来说明。</p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $age=<span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line">$dog1 = <span class="keyword">new</span> Dog();</span><br><span class="line">$dog2=$dog1;</span><br><span class="line">$dog2-&gt;age=<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<p>echo $dog1-&gt;age;等于几呢?答案是3。<br><br>
+修改属性并不会导致zval分裂，因为一个对象的到对象的属性有三层，dog1和dog2指向同一个指针，而这个指针指向的是一张符号表，修改的是符号表里的属性值。<br><br>
+如果修改的是指针，则分裂。<br><br>
+例如$dog2=1;此时才会分裂。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/09/数据库定时备份/" rel="next" title="数据库定时备份">
+                <i class="fa fa-chevron-left"></i> 数据库定时备份
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/09/浅谈php变量的实现/" rel="prev" title="浅谈php变量的实现">
+                浅谈php变量的实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象"><span class="nav-number">1.</span> <span class="nav-text">¶对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟绑定"><span class="nav-number">2.</span> <span class="nav-text">¶延迟绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2017-02-05对该博文进行勘误"><span class="nav-number">3.</span> <span class="nav-text">¶2017-02-05对该博文进行勘误</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

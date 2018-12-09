@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库定时备份，围绕两样东西展开，一个是shell程序 (一般别人更愿意叫shell脚本)， 一个是定时任务(crontab)。 很简单的一个小程序，shell负责导出数据库，打包好 ，然后删除没用的。 定时任务完全可以理解为 ，让系统每隔多久执行一下的一个任务，这玩意就叫定时任务。  下面分开说这两样东西，最后把定时备份这段也弄上来。 ¶shell shell到底是什么，该怎么写，我的理解是l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库定时备份">
+<meta property="og:url" content="http://yoursite.com/2018/12/09/数据库定时备份/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="数据库定时备份，围绕两样东西展开，一个是shell程序 (一般别人更愿意叫shell脚本)， 一个是定时任务(crontab)。 很简单的一个小程序，shell负责导出数据库，打包好 ，然后删除没用的。 定时任务完全可以理解为 ，让系统每隔多久执行一下的一个任务，这玩意就叫定时任务。  下面分开说这两样东西，最后把定时备份这段也弄上来。 ¶shell shell到底是什么，该怎么写，我的理解是l">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-318c16ee5309f798.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800/format/webp">
+<meta property="og:updated_time" content="2018-12-09T08:56:41.853Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库定时备份">
+<meta name="twitter:description" content="数据库定时备份，围绕两样东西展开，一个是shell程序 (一般别人更愿意叫shell脚本)， 一个是定时任务(crontab)。 很简单的一个小程序，shell负责导出数据库，打包好 ，然后删除没用的。 定时任务完全可以理解为 ，让系统每隔多久执行一下的一个任务，这玩意就叫定时任务。  下面分开说这两样东西，最后把定时备份这段也弄上来。 ¶shell shell到底是什么，该怎么写，我的理解是l">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-318c16ee5309f798.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/09/数据库定时备份/">
+
+
+
+
+
+  <title>数据库定时备份 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/数据库定时备份/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库定时备份</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T16:46:34+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-318c16ee5309f798.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800/format/webp" alt=""></p>
+<p>数据库定时备份，围绕两样东西展开，一个是shell程序<br>
+(一般别人更愿意叫shell脚本)，<br>
+一个是定时任务(crontab)。<br><br>
+很简单的一个小程序，shell负责导出数据库，打包好<br>
+，然后删除没用的。<br><br>
+定时任务完全可以理解为<br>
+，让系统每隔多久执行一下的一个任务，这玩意就叫定时任务。<br>
+<br><br>
+下面分开说这两样东西，最后把定时备份这段也弄上来。</p>
+<h2 id="shell"><a class="header-anchor" href="#shell">¶</a><strong>shell</strong></h2>
+<p>shell到底是什么，该怎么写，我的理解是linux命令的<em>集合</em>。<br><br>
+比如你想echo一个1，紧接着再写一个echo 2,你需要1和2同时出现。<br><br>
+这时你可以将echo1和echo2写进shell脚本里，执行这个脚本，<br>
+脚本会将里面的echo1和echo2当作一个命令集合来运行。<br>
+<br></p>
+<p>shell编程属于一门语言，有变量，运算，和控制结构。<br><br>
+在这里就不讲太详细了，这些都是死的。<br><br>
+shell的格式:<br><br>
+.sh作为文件名后缀，文件开始声明shell程序，#！/bin/bash,<br>
+第二行开始写程序。<br>
+<br><br>
+shell脚本可以通过两种方式来运行，一种是直接选中当前文件，<br>
+比如./test.sh,还有一种是调用解释器来执行shell程序，<br>
+比如 /bin/bash ./test.sh。<br><br>
+shell程序里应该都用绝对路径，<br>
+shell里面有各种表达式如数学表达式大于小于的写法和规范，<br>
+还有U文件表达式的写法如文件是否存在和规范，<br>
+且还可以传参数到shell脚本里面使用，就像php里的$_GET或$_POST一样使用，还有各种系统变量。<br>
+<br></p>
+<blockquote>
+<p><strong>对我来说,语言只是工具，语言的规范和各种表达式或插件或函数只是工具的用法<br>
+，程序的好坏不取决于语言，而是取决于想象力</strong></p>
+</blockquote>
+<h2 id="定时任务"><a class="header-anchor" href="#定时任务">¶</a><strong>定时任务</strong></h2>
+<p>定时任务更简单了，crontab -e,表示增加一个定时任务，<br>
+那定时任务怎么写呢。<br><br>
+刚开始五个米字符，代表定时任务时间格式<em>分时日月周</em>，<br>
+中间需要有空格，* * * * * 后面写执行的命令，<br>
+建议用第二种调用shell脚本的方式，可以避开权限的问题。<br>
+*/1 * * * * 这个代表每分钟执行一次。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash#这里是声明这是个shell脚本用bin/bash来启动</span><br><span class="line">mydate=`date +%Y%m%d`#定义一个变量</span><br><span class="line">mypath=/var/testcode#定义目录路径</span><br><span class="line">mydatabase=test#定义数据库的名字</span><br><span class="line">expiration=`date -d "-7 day" +%Y%m%d`#定义七天前时间</span><br><span class="line">mysqldump -uroot -p123456 $mydatabase &gt; $mypath/$mydate.$mydatabase.sql</span><br><span class="line">cd $mypath</span><br><span class="line">tar czf $mypath/$mydate.$mydatabase.tar.gz $mydate.$mydatabase.sql</span><br><span class="line">rm $mypath/$mydate.$mydatabase.sql</span><br><span class="line">if [ -f $mypath/$expiration.tar.gz ]#判断文件是否存在</span><br><span class="line">then</span><br><span class="line">rm -rf $mypath/$expiration.tar.gz</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>以上是数据库备份的shell程序，这个程序会将当天的数据库备份打包，<br>
+删掉7天前的备份。<br><br>
+crontab -e 新建定时任务，定好时间，<br>
+比如这个可以每天凌晨4点钟执行，<br>
+可以写成 * 4 * * * /bin/bash /var/testcode/a.sh。<br><br>
+当然，定时任务对于phper来说更多的是定时运行某一些php脚本。<br>
+其实都差不多。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/09/php的位运算总结/" rel="next" title="php的位运算总结">
+                <i class="fa fa-chevron-left"></i> php的位运算总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/09/对象的本质，延迟绑定/" rel="prev" title="对象的本质，延迟绑定">
+                对象的本质，延迟绑定 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#shell"><span class="nav-number">1.</span> <span class="nav-text">¶shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定时任务"><span class="nav-number">2.</span> <span class="nav-text">¶定时任务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

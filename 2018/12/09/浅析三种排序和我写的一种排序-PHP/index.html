@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="要说起对数组进行排序，php很擅长，php有非常多的数组函数，其中就包括了排序。冒泡排序，选择排序，插入排序，今天将这三种排序思想及原理进行记录，及自己写的一个排序函数。 ¶冒泡 冒泡排序法，名字很有意思，也是我认为最好理解其思想及原理的一个排序法。  第一层循环只做循环次数限制，第二层循环两两相邻的比较，数值大的往下沉，数值小的往上浮  1234567891011121314151617181">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析三种排序和我写的一种排序-PHP">
+<meta property="og:url" content="http://yoursite.com/2018/12/09/浅析三种排序和我写的一种排序-PHP/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="要说起对数组进行排序，php很擅长，php有非常多的数组函数，其中就包括了排序。冒泡排序，选择排序，插入排序，今天将这三种排序思想及原理进行记录，及自己写的一个排序函数。 ¶冒泡 冒泡排序法，名字很有意思，也是我认为最好理解其思想及原理的一个排序法。  第一层循环只做循环次数限制，第二层循环两两相邻的比较，数值大的往下沉，数值小的往上浮  1234567891011121314151617181">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-7357f75bfa1e6a54.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2018-12-09T07:18:23.587Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅析三种排序和我写的一种排序-PHP">
+<meta name="twitter:description" content="要说起对数组进行排序，php很擅长，php有非常多的数组函数，其中就包括了排序。冒泡排序，选择排序，插入排序，今天将这三种排序思想及原理进行记录，及自己写的一个排序函数。 ¶冒泡 冒泡排序法，名字很有意思，也是我认为最好理解其思想及原理的一个排序法。  第一层循环只做循环次数限制，第二层循环两两相邻的比较，数值大的往下沉，数值小的往上浮  1234567891011121314151617181">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-7357f75bfa1e6a54.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/09/浅析三种排序和我写的一种排序-PHP/">
+
+
+
+
+
+  <title>浅析三种排序和我写的一种排序-PHP | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/浅析三种排序和我写的一种排序-PHP/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅析三种排序和我写的一种排序-PHP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T00:21:46+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序思想/" itemprop="url" rel="index">
+                    <span itemprop="name">程序思想</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-7357f75bfa1e6a54.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+<p>要说起对数组进行排序，php很擅长，php有非常多的数组函数，其中就包括了排序。冒泡排序，选择排序，插入排序，今天将这三种排序思想及原理进行记录，及自己写的一个排序函数。<br></p>
+<h2 id="冒泡"><a class="header-anchor" href="#冒泡">¶</a><strong>冒泡</strong></h2>
+<p><strong><em>冒泡排序法，名字很有意思，也是我认为最好理解其思想及原理的一个排序法。</em></strong></p>
+<blockquote>
+<p>第一层循环只做循环次数限制，第二层循环两两相邻的比较，数值大的往下沉，数值小的往上浮</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span><span class="params">($arr)</span></span></span><br><span class="line"><span class="function"></span>&#123;    </span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; count($arr) - <span class="number">1</span>; $i += <span class="number">1</span>) &#123;</span><br><span class="line">            $temp = <span class="number">0</span>;<span class="comment">//交换变量</span></span><br><span class="line">            $flag = <span class="keyword">true</span>;<span class="comment">//一个记录标志</span></span><br><span class="line">            <span class="keyword">for</span> ($j = <span class="number">0</span>; $j &lt; count($arr) - <span class="number">1</span> - $i; $j += <span class="number">1</span>) &#123;</span><br><span class="line">                   <span class="keyword">if</span> ($arr[$j] &gt; $arr[$j + <span class="number">1</span>]) &#123;</span><br><span class="line">                        $temp = $arr[$j];</span><br><span class="line">                        $arr[$j] = $arr[$j + <span class="number">1</span>];</span><br><span class="line">                        $arr[$j + <span class="number">1</span>] = $temp;</span><br><span class="line">                        $flag = <span class="keyword">false</span>;</span><br><span class="line">                        &#125;        </span><br><span class="line">             &#125;</span><br><span class="line">            <span class="keyword">if</span> ($flag === <span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> $arr;<span class="comment">//已经是有序的了        </span></span><br><span class="line">            &#125;    </span><br><span class="line">     &#125;  </span><br><span class="line">         <span class="keyword">return</span> $arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>传进来一个数组，循环这个数组，第一层for循环判断-1是因为按照冒泡排序来讲，假设有5个键，有四个确认了位置的话第五个自然是在它该在的位置，所以无需多循环一遍。</strong><br></p>
+</blockquote>
+<p>第二层For循环开始取相邻的比较，如果判断成立则利用temp变量互换位置，然后再挨个比较。<br><br>
+假设传进去的数组是这样array(5,0,-1);在第一次排序后也就是第二层循环的第一次循环，$arr是(0,5,-1),第二次$arr(0,-1,5),第三次第二层已跳出，判断已经不成立，跳回第一层循环，继续开始第二层循环第二层循环只会执行一遍$arr(-1,0,5)执行完毕后返回已排好序的数组。<br></p>
+<blockquote>
+<p>flag有优化代码的作用，如果传进来的数组本身就是一个有序数组的话，是不会走第二层循环的if条件的，所以flag===true，第二层循环完成后就会直接返回不会再经过第一层循环了。<br>
+冒泡排序利用第二层的相邻的两个键值做对比，完成互换位置，这是核心思想。这个冒泡应该是再没得优化了，网上那些优化顶多也就优化成这样。</p>
+</blockquote>
+<h2 id="选择排序"><a class="header-anchor" href="#选择排序">¶</a><strong>选择排序</strong></h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">selectSort</span><span class="params">($arr)</span>//假设当前的值为最小的，如果找到比他还小的就互换位置</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; count($arr); $i += <span class="number">1</span>) &#123;</span><br><span class="line">         $minval = $arr[$i];</span><br><span class="line">         $minkey = $i;</span><br><span class="line">         $flag = <span class="keyword">true</span>;</span><br><span class="line">         <span class="keyword">for</span> ($j = $i + <span class="number">1</span>; $j &lt; count($arr); $j += <span class="number">1</span>) &#123;<span class="comment">//循环过后最终最小值出现</span></span><br><span class="line">             <span class="keyword">if</span> ($arr[$j] &lt; $minval) &#123;</span><br><span class="line">                 $minval = $arr[$j];</span><br><span class="line">                 $minkey = $j;</span><br><span class="line">                 $flag = <span class="keyword">false</span>;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> ($flag == <span class="keyword">false</span>) &#123;<span class="comment">//说明最小值有经过交换到$i位</span></span><br><span class="line">             $arr[$minkey] = $arr[$i];</span><br><span class="line">             $arr[$i] = $minval;</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">return</span> $arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>选择排序法的思想，假设第一个键为最小值，从第二层循环开始轮番跟假设值进行比较比较成功后进行换为，第二层循环结束后，此数组中最小的值被交换到最前面，接着又开始第一层循环。</strong></p>
+</blockquote>
+<p>这个选择排序法，我看很多网上还加了一个交换变量，其实这里没必要用到交换变量，因为假设值的键和值都已经做了存储了。<br><br>
+选择排序法在跳出第二层循环的时候就会永久确认一个数值的位置，这点和冒泡不一样。<br><br>
+其实选择排序法还有更加简洁的办法，我写的这个选择排序在网上能查到的应该算是简洁明了的了，但是其实这个选择排序法还能更加简洁！<br><br>
+我自己写的排序最后讲，那是第一次尝试写冒泡中，当时思维比较混乱的时候写出来的，思想其实跟选择排序是一样的，但是比这个选择排序要简洁得多，但是相对起理解选择排序法来说，还是这个更好去理解。</p>
+<h2 id="插入排序"><a class="header-anchor" href="#插入排序">¶</a><strong>插入排序</strong></h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public function insertSort($arr)//先默认键为0的值已经为有序，键值为$i的为待插入数，只要待插入数小于前面的数，就代表不确定插入位置，    //插入位置的确定是待插入数$i,$i要比$i-1要大比$i+1要小</span><br><span class="line">&#123;    </span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt; count($arr); $i += <span class="number">1</span>) &#123;</span><br><span class="line">        $inserval = $arr[$i];<span class="comment">//待插入数</span></span><br><span class="line">        $inserindex = $i - <span class="number">1</span>;<span class="comment">//与前面一位数字进行比较</span></span><br><span class="line">        <span class="keyword">while</span> ($inserindex &gt;= <span class="number">0</span> &amp;&amp; $inserval &lt; $arr[$inserindex]) &#123;<span class="comment">//只要键大于或等于0并且待插入数要小于前面一位数，</span></span><br><span class="line">            $arr[$inserindex + <span class="number">1</span>] = $arr[$inserindex];<span class="comment">//如果小于的话，把比较数往后面挪一下</span></span><br><span class="line">            $inserindex -= <span class="number">1</span>;<span class="comment">//此时将比较数再往前一步，相当于带插入数还不确定位置，还要跟前面的再次比较一下</span></span><br><span class="line">        &#125;        </span><br><span class="line">        <span class="comment">//当以上条件不满足，即将走到这一步，        </span></span><br><span class="line">        $arr[$inserindex + <span class="number">1</span>] = $inserval;<span class="comment">//将待插入数插入(插入位置绝对是比较数字位置后一位)    </span></span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">return</span> $arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>插入排序，跟玩牌一样，确认一张牌不动，比不动牌小的往左放，大的往右边放。</p>
+</blockquote>
+<p>插入排序效率要相对于高一些。<br>
+下面要贴出来的是我巧合之中自己摸索出来的一个排序，核心思想其实还是跟选择排序一样，但是你多看几遍会发现其实完全没有必要将$arr[$i]的键值保存下来，因为在当前循环中$i并不会改变,只需要一个交换变量就够了。所以看下面。</p>
+<h2 id="我写的排序"><a class="header-anchor" href="#我写的排序">¶</a><strong>我写的排序</strong></h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">mySort</span><span class="params">($arr)</span>//在一轮中找到最小值</span>&#123;</span><br><span class="line">    $temp = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; count($arr) - <span class="number">1</span>; $i += <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="keyword">for</span> ($j = <span class="number">0</span> + $i; $j &lt; count($arr); $j += <span class="number">1</span>) &#123; </span><br><span class="line">              <span class="keyword">if</span> ($arr[$i] &gt; $arr[$j]) &#123;</span><br><span class="line">                $temp = $arr[$i];</span><br><span class="line">                $arr[$i] = $arr[$j];</span><br><span class="line">                $arr[$j] = $temp;</span><br><span class="line">              &#125;        </span><br><span class="line">          &#125;    </span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> $arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这看起来是不是更加简洁明了？核心思想其实是跟选择排序一模一样哦。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/08/laravel使用omnipay完成微信支付/" rel="next" title="laravel使用omnipay完成微信支付">
+                <i class="fa fa-chevron-left"></i> laravel使用omnipay完成微信支付
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/09/二分查找及快速排序/" rel="prev" title="二分查找及快速排序">
+                二分查找及快速排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#冒泡"><span class="nav-number">1.</span> <span class="nav-text">¶冒泡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">2.</span> <span class="nav-text">¶选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入排序"><span class="nav-number">3.</span> <span class="nav-text">¶插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我写的排序"><span class="nav-number">4.</span> <span class="nav-text">¶我写的排序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

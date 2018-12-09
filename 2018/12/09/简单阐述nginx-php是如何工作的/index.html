@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这里要提到几个东西，cgi,php-fpm,fastcgi,phpcgi,网上有很多种解释，大部分都正确，但解释得不算太清晰，有时候多一个字或者少一个字会产生一些误解，经过不断的去求证，大致也了解了一些关于php网站是如何呈现在用户面前的，当然说得有big一点的话也就是php的运行机制流程是怎样的。  ¶小故事 专业性的名词暂且不讲，先来形象的讲一个故事: 因为房价一直涨，老王被气死了，当老王醒">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单阐述nginx+php是如何工作的">
+<meta property="og:url" content="http://yoursite.com/2018/12/09/简单阐述nginx-php是如何工作的/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="这里要提到几个东西，cgi,php-fpm,fastcgi,phpcgi,网上有很多种解释，大部分都正确，但解释得不算太清晰，有时候多一个字或者少一个字会产生一些误解，经过不断的去求证，大致也了解了一些关于php网站是如何呈现在用户面前的，当然说得有big一点的话也就是php的运行机制流程是怎样的。  ¶小故事 专业性的名词暂且不讲，先来形象的讲一个故事: 因为房价一直涨，老王被气死了，当老王醒">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-f6f0d33ca32d499d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2018-12-09T08:19:13.618Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单阐述nginx+php是如何工作的">
+<meta name="twitter:description" content="这里要提到几个东西，cgi,php-fpm,fastcgi,phpcgi,网上有很多种解释，大部分都正确，但解释得不算太清晰，有时候多一个字或者少一个字会产生一些误解，经过不断的去求证，大致也了解了一些关于php网站是如何呈现在用户面前的，当然说得有big一点的话也就是php的运行机制流程是怎样的。  ¶小故事 专业性的名词暂且不讲，先来形象的讲一个故事: 因为房价一直涨，老王被气死了，当老王醒">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-f6f0d33ca32d499d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/09/简单阐述nginx-php是如何工作的/">
+
+
+
+
+
+  <title>简单阐述nginx+php是如何工作的 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/简单阐述nginx-php是如何工作的/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简单阐述nginx+php是如何工作的</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T16:07:48+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-f6f0d33ca32d499d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+<p>这里要提到几个东西，cgi,php-fpm,fastcgi,phpcgi,网上有很多种解释，大部分都正确，但解释得不算太清晰，有时候多一个字或者少一个字会产生一些误解，经过不断的去求证，大致也了解了一些关于php网站是如何呈现在用户面前的，当然说得有big一点的话也就是php的运行机制流程是怎样的。<br>
+<br></p>
+<h2 id="小故事"><a class="header-anchor" href="#小故事">¶</a><strong>小故事</strong></h2>
+<p>专业性的名词暂且不讲，先来形象的讲一个故事:<br><br>
+因为房价一直涨，老王被气死了，当老王醒来发现自己竟然穿越到了古猿时代。<br><br>
+肚子饿得很，但是自己是个现代人不会打猎啊，怎么办呢，只能要求古猿帮帮忙了。<br><br>
+但是古猿听不懂他说的话，幸好跟随老王穿越过来的还有许多许多现代物品，其中就包括了非常多的纸和笔了，老王就画了根黄瓜，递给了古猿，古猿看不懂啊，因为这种形状的东西太多了，你到底是要干什么呢，老王马上知道古猿的疑虑了，马上提笔挥墨，画了个自己肚子饿要吃的动作，古猿明白了，从外面采集了些黄瓜回来给了老王，一天就结束了。<br>
+<br><br>
+第二天老王又饿了，他想吃肉了，并且发现这群猿对自己简直言听计从啊，前提是沟通得了。<br><br>
+于是老王又画了一块肉，画了一个吃的动作，古猿告诉他，肉他弄不到，但是有的猿能弄到，这种猿叫食肉猿。<br><br>
+就把食肉猿叫了过来，老王把纸交给了食肉猿，于是食肉猿开始收拾装备，老王以为他马上就能吃到肉了，但是万万没想到，食肉猿居然跳起了舞，后来了解到食肉猿要打猎必须先跳一段舞拜一下老天，求老天给予指引告诉他哪些地方可以有收获。<br><br>
+经过一番折腾后，老王终于又吃到了肉了，第二天就这样结束了。<br>
+<br></p>
+<p>第三天老王的饭量变大了，需要不停的吃上几块肉才觉得爽，虽然吃是吃饱了，但是他有一点不爽，那就是每叫一个食人猿，总会跳一段舞，导致吃完了一块肉，得等会才能吃上另外一块肉。<br><br>
+后来想到了一个好办法，如果让他们只跳一次舞，就能一直去打猎，因为这些舞都跳得一模一样，太浪费时间了。<br><br>
+但是要怎么做到呢？后来找到一个聪明点的猿，幸福生活即将要开始。<br></p>
+<p>来到了第四天，老王一起床叫了一些食肉猿来到自己面前，说你们以后归聪明猿管了，他昨天晚上已经帮你们跳好舞蹈了，以后他让你们打猎你们就去打猎带来肉给我就可以了，众猿纷纷点头。<br><br>
+老王开始验证自己的这套机制，首先跟聪明猿画了画，<strong>有肉和吃的动作</strong>，果然很快食肉猿带来了一块肉并没有跳舞，然后跟聪明猿要了4块肉，马上又吃完了4块肉。<br><br>
+最后和聪明猿说要100块肉，快过年了得腌点肉过冬了，但是很奇怪的是，<strong>前99块肉很快就拿到手上了，但是最后一块肉却迟了一点</strong>。<br><br>
+找聪明猿问了问情况，聪明猿比划着跟老王解释，原来他上次只叫了99个食人猿说归聪明猿管，当他要100块肉时，99个食人猿已经全部出动找肉了，当99个食人猿带着肉回来时，聪明猿记着还有一块没送过来，于是又叫了一个食人猿再次出发，所以最后一块肉才晚了一点，如果想要1次收获100块肉的话呢，可以再交给聪明猿一个食人猿就可以解决了。<br><br>
+老王以后的需求可能越来越变态，但是在这古猿时代，总会有一些聪明猿来想方设法的讨这位从未来来的客人欢喜，因为满足了老王，会有越来越多的猿变成聪明猿，会让这个古猿时代变得越来越繁荣。</p>
+<h2 id="故事背后的故事"><a class="header-anchor" href="#故事背后的故事">¶</a><strong>故事背后的故事</strong></h2>
+<p>好了，再开始讲讲以上的小故事和今天的标题是什么联系吧，我喜欢把这叫做php是如何工作的，有些叫做php的进程管理，有人叫做php的工作机制，当然后两种说法更专业，但我有些不喜欢。<br></p>
+<h4 id="cgi代表着一种协议"><a class="header-anchor" href="#cgi代表着一种协议">¶</a>cgi代表着一种协议</h4>
+<p>服务器发送什么样的数据给php解析，解析结果以什么样的方式返回给服务器,我觉得这是一种很好的解释办法，更好的解释办法就是干脆说他是一个接口吧，规定接受什么数据返回什么数据。<br><br>
+每一次接受请求都需要解析一遍php.ini和初始化执行环境。代表着老王第一次吃肉。</p>
+<h4 id="fastcgi-也是一种协议"><a class="header-anchor" href="#fastcgi-也是一种协议">¶</a>fastcgi,也是一种协议</h4>
+<p>它比cgi更快，原因是在服务器启动时，就会启动一个master，然后解析一遍php.ini和初始化环境，然后再启动多个worker等待请求，请求多时，会按照预先的配置再多几个worker，请求少时，关闭一些worker，由worker调动phpcgi。master是聪明猿<br></p>
+<h4 id="phpcgi是php语言的解释器-食肉猿-br"><a class="header-anchor" href="#phpcgi是php语言的解释器-食肉猿-br">¶</a>phpcgi是php语言的解释器。食肉猿<br></h4>
+<h4 id="而phpfpm-实现了fastcgi这个协议-br"><a class="header-anchor" href="#而phpfpm-实现了fastcgi这个协议-br">¶</a>而phpfpm，实现了fastcgi这个协议。<br></h4>
+<p>古猿是谁呢，古猿是用户请求的静态数据。<br><br>
+为什么要画吃的动作呢，因为这是协议，规定了你返回什么数据，画肉为我需求什么数据。<br><br>
+纸代表了Nginx,而不是老王。<br></p>
+<p>所以，用户在浏览器上请求一次，通过http请求到我们的服务器，nginx有个fastcgi模块，nginx通过fastcgi协议将数据传递给phpfpm,由fpm选择一个worker来调用phpcgi解释请求，解释完毕后以fastcgi协议为基础将数据返回给Nginx，nginx通过Http协议返回给用户。</p>
+<br>
+若解释牵强或本人理解有误，望告知。
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/09/二分查找及快速排序/" rel="next" title="二分查找及快速排序">
+                <i class="fa fa-chevron-left"></i> 二分查找及快速排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/09/php的位运算总结/" rel="prev" title="php的位运算总结">
+                php的位运算总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#小故事"><span class="nav-number">1.</span> <span class="nav-text">¶小故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故事背后的故事"><span class="nav-number">2.</span> <span class="nav-text">¶故事背后的故事</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cgi代表着一种协议"><span class="nav-number">2.0.1.</span> <span class="nav-text">¶cgi代表着一种协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fastcgi-也是一种协议"><span class="nav-number">2.0.2.</span> <span class="nav-text">¶fastcgi,也是一种协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#phpcgi是php语言的解释器-食肉猿-br"><span class="nav-number">2.0.3.</span> <span class="nav-text">¶phpcgi是php语言的解释器。食肉猿</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#而phpfpm-实现了fastcgi这个协议-br"><span class="nav-number">2.0.4.</span> <span class="nav-text">¶而phpfpm，实现了fastcgi这个协议。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

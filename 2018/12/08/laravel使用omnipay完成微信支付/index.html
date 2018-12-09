@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在 laravel 学院看到用 omnipay-alipay 支付完成这功能后，接着我开始做微信支付了，微信支付 laravel学院 也有写微信支付用的什么插件完成，不过使用的是 overture ,这应该叫项目名吧，官网和插件名好像是叫 easywecha ,对于做微信各方面功能来说都非常的强大，所以非常出名。 不过在laravel学院中也提到了 omnipay 也提供了微信支付，因为没用过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel使用omnipay完成微信支付">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/laravel使用omnipay完成微信支付/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="在 laravel 学院看到用 omnipay-alipay 支付完成这功能后，接着我开始做微信支付了，微信支付 laravel学院 也有写微信支付用的什么插件完成，不过使用的是 overture ,这应该叫项目名吧，官网和插件名好像是叫 easywecha ,对于做微信各方面功能来说都非常的强大，所以非常出名。 不过在laravel学院中也提到了 omnipay 也提供了微信支付，因为没用过">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-ff39a4173a54f55b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-b3501ff2c527757f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/615/format/webp">
+<meta property="og:updated_time" content="2018-12-08T16:13:58.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel使用omnipay完成微信支付">
+<meta name="twitter:description" content="在 laravel 学院看到用 omnipay-alipay 支付完成这功能后，接着我开始做微信支付了，微信支付 laravel学院 也有写微信支付用的什么插件完成，不过使用的是 overture ,这应该叫项目名吧，官网和插件名好像是叫 easywecha ,对于做微信各方面功能来说都非常的强大，所以非常出名。 不过在laravel学院中也提到了 omnipay 也提供了微信支付，因为没用过">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-ff39a4173a54f55b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/08/laravel使用omnipay完成微信支付/">
+
+
+
+
+
+  <title>laravel使用omnipay完成微信支付 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/laravel使用omnipay完成微信支付/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel使用omnipay完成微信支付</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:49:35+08:00">
+                2018-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/项目模块/" itemprop="url" rel="index">
+                    <span itemprop="name">项目模块</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-ff39a4173a54f55b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+<p>在 laravel 学院看到用 omnipay-alipay 支付完成这功能后，接着我开始做微信支付了，微信支付 laravel学院 也有写微信支付用的什么插件完成，不过使用的是 overture ,这应该叫项目名吧，官网和插件名好像是叫 easywecha ,对于做微信各方面功能来说都非常的强大，所以非常出名。<br><br>
+不过在laravel学院中也提到了 omnipay 也提供了微信支付，因为没用过 easywecha，只用过 omnipay ，所以我没有按照 laravel学院 使用 overture ,而是还是使用的 omnipay 里的插件 omnipay-wechapa y,在github找到了这个项目，发现支付宝的插件和微信插件的作者都是同一个人，因为使用过他做的支付宝插件，所以用微信的也还算得上有点经验，<strong>在做微信支付时得到了作者得热心帮助，在此深表感谢</strong>。<br><br>
+如果有喜欢 omnipay 风格做微信或者支付宝支付的话可以去作者的 github 去看一下，有文档，链接地址附上:<a href="https://github.com/lokielse/omnipay-wechatpay" target="_blank" rel="noopener">https://github.com/lokielse/omnipay-wechatpay</a><br></p>
+<p>具体配置可以参照 laravel学院 的支付宝支付章节，一个数组就是一个网关或者说是一种支付方式，要用微信支付的话，只需要在那配置文件中照着支付宝的做一个小数组就可以了。<br></p>
+<blockquote>
+<p>我做的是微信扫码支付模式二，在pc端页面显示出一个含有订单信息的二维码，就可以拿起手机打开微信客户端扫码支付了，微信的扫码支付和支付宝的扫码支付不同，支付宝扫码支付成功后会跳转到支付宝的页面去，再通过你传的回调地址跳转回你自己的页面，微信扫码你支付完成后，页面不会有任何变化，再次扫二维码会在微信客户端提示你订单已经失效。</p>
+</blockquote>
+<p>微信支付的流程基本和支付宝一致，首先是在自己的服务器发送一个下单请求，经过重重验证通过后会返回给你一串数据，你拿到这串地址数据后，你要借助第三方的二维码制作的库显示出这个二维码，如果用原生的sdk就很简单了，sdk有提供一个第三方库供我们使用。<br><br>
+但是我们需要安全可靠，且符合 laravel 风格代码好维护，在我们的项目中使用的第三方二维码库，就是使用的原生sdk里面的库。<br><br>
+在 laravel 这个框架里想显示出二维码有个小坑，下面附上 github 代码加以解释。<br></p>
+<blockquote>
+<p><strong>忘了说了，如果create方法不能正常使用，请用gateway!</strong></p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/7027304-b3501ff2c527757f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/615/format/webp" alt=""></p>
+<p>当你成功获取到微信返回回来的地址后，怎么将二维码在页面上输出呢。<br><br>
+这时我们需要把官方 sdk 下载下来，里面有一个第三方的库叫 phpqrcode.php ,调用里面的一个方法 png 即可输出，我们可以先将此库 require 进控制器(<strong>以前的文章,不推荐这样做,好的做法是直接绑定到容器中</strong>)，再将 getCodeurl 返回回来的参数输入进去即可出来。<br><br>
+但这地方有个小坑，png 方法返回的是一个二进制流，你如果单纯的将它获取到再赋到模版上，图片是出不来的，不知道你们会不会遇到这个坑，但是这个坑可把我给坑惨了，经过同事们和我一下午的调试，发现你请求这个图片，它的响应头的响应类型居然是text/html!!!<br><br>
+正常的应该是图片才对啊，最后折中给它解决掉了，如果你也遇到了这个问题，可以去看一下 Laravel学院 基础篇的 http 响应篇章。<br><br>
+解决办法如下:</p>
+<blockquote>
+<p>将getCodeurl丢进urlencode函数里加密，赋到模版上去，然后再在控制器里做一个方法，在路由器里做一条可以传参的路由可以使用post，我是用的any，对应这个方法。<br>
+在模版里的img标签中的src属性中调用这条路由，将加密过后的参数丢到这路由里面去。<br><br>
+这条路由对应的方法里面写 return response(\QRcode::png(urldecode($pngcode)), 200)-&gt;header(‘Content-Type’, “image/png”)即可。<br><br>
+经测试也可以用dd函数，dd函数似乎可以识别数据类型再以对应类型给予响应。<br><br>
+到此微信的下单请求就结束了，比支付宝的操作还是麻烦些。下面来说回调。</p>
+</blockquote>
+<p>支付成功后支付宝会返回一段xml格式到你的服务器上，你要判断是否成功，然后给予微信想要的响应，官方的说法是会间隔一小段时间重复调用你的回调路由，所以，如果你有对订单进行状态改变的话，最好在回调方法开始时，就找到这一条订单查询状态如果状态已改变则直接返回成功，否则判定为第一次回调，完成自己的逻辑。       <br><br>
+我不知道 omnipay-wechapay 有没有可以直接让我们调用的解析 xml 转数组的方法，我找了一圈似乎没有，还好找了一圈，发现 wechapay 内部是有这个方法的，可惜是用在其他地方，幸好这个方法只有一句话，略加改造即可自己使用:<br></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$xml_array = json_decode(json_encode(simplexml_load_string($GLOBALS[<span class="string">'HTTP_RAW_POST_DATA'</span>], <span class="string">'SimpleXMLElement'</span>, LIBXML_NOCDATA)), <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<p>回调的调试方法最好是写日志。<br><br>
+回调流程怎么做具体还是去看github的官方文档，会有大致流程，返回给微信服务器的也需要xml格式，可以去插件里面找array2xml，丢到自己控制器里面来直接调用就可以了。<br><br>
+再次感谢laravel学院和插件作者。最后强调一点，composer 最好不要 update ,哪个插件要更新就单独更新就好了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/08/laravel使用OmniPay支付宝支付/" rel="next" title="laravel使用OmniPay支付宝支付">
+                <i class="fa fa-chevron-left"></i> laravel使用OmniPay支付宝支付
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/09/浅析三种排序和我写的一种排序-PHP/" rel="prev" title="浅析三种排序和我写的一种排序-PHP">
+                浅析三种排序和我写的一种排序-PHP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
