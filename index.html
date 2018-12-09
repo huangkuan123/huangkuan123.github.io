@@ -510,7 +510,10 @@
 
 代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解
 
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455type clie
+type client chan&lt;- string  // send only channel
+var (
+    entering = make(chan client)
+    leaving = make(c
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -659,7 +662,10 @@
         
           
           
-12345678910111213141516171819202122232425262728type myHandler struct&#123;&#125;func main() &#123;        http.HandleFunc("/", Hello)             //没
+type myHandler struct{}
+func main() {    
+    http.HandleFunc(&quot;/&quot;, Hello)             //没有指定路由则匹配到根路由    
+    http.HandleFunc(&quot;/bye&qu
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -808,7 +814,9 @@
         
           
           
-1234567891011121314151617181920212223242526272829func main() &#123;        fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序        runti
+func main() {    
+    fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序    
+    runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go时非
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -957,7 +965,13 @@
         
           
           
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465type User struct &#123;     
+type User struct {    
+    Name string    
+    Age  int    
+    Id   int
+    }
+func (u User) GetName(name string) { //将匿名方法绑定到结构体中    
+    fmt.Printl
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1106,7 +1120,14 @@
         
           
           
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970type USB interface
+type USB interface { //定义一个接口    
+    Name()    
+    Connect()
+    }
+type USBa interface { //定义一个接口做Disconnect测试    
+    Name()    
+    Connecte
+    
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1255,7 +1276,16 @@
         
           
           
-12345678910111213141516171819202122type A struct &#123;        Name string    &#125;type B struct &#123;        Name string    &#125;func main() &#12
+type A struct {    
+    Name string
+    }
+type B struct {    
+    Name string
+    }
+func main() {    
+    a := A{}    
+    a.Echo()    
+    b := B{} 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1404,7 +1434,14 @@
         
           
           
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960type person struct &#123;        Name 
+type person struct {    
+    Name string    
+    Age  int
+    }
+type user struct {
+    Name string    
+    Age  int    
+    Info struct { //结构体嵌套一个匿名
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1553,7 +1590,12 @@
         
           
           
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879
+func main() {    
+    //B(&quot;ok&quot;, 4)    
+    s1 := []int{1, 2, 3}    
+    a, b, c := 4, 5, 6    
+    C(s1, a, b, c)    
+    fmt.Println(s1)  
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1702,7 +1744,12 @@
         
           
           
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758func main() &#123;        m := make(map[in
+func main() {    
+    m := make(map[int]string) //初始化一个map
+    m[1] = &quot;ok&quot;//赋值    
+    delete(m, 1)//删除m键为1的键值对
+    a := m    
+    fmt.Prin
           ...
           <!--noindex-->
           <div class="post-button text-center">

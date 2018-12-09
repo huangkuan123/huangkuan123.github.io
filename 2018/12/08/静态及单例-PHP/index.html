@@ -87,7 +87,7 @@
 <meta property="og:description" content="¶静态变量  当你声明一个普通局部变量，在函数中调用时会在内存中申请一块空间，函数结束后，返回一个值，空间被清除。  而当你申明一个静态变量时，将这个变量在函数中运算改变以后，这个静态变量不会从内存中消失，保留的值是进行运算改变后的值。静态变量应用范围比较广，可以避免多次链接。 下面有一个thinkphp3.2版本的内置函数: 12345public function C($k,$v)&amp;#123">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-b85a81a1d1ffc011.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-08T14:44:42.597Z">
+<meta property="og:updated_time" content="2018-12-09T14:59:13.642Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="静态及单例-PHP">
 <meta name="twitter:description" content="¶静态变量  当你声明一个普通局部变量，在函数中调用时会在内存中申请一块空间，函数结束后，返回一个值，空间被清除。  而当你申明一个静态变量时，将这个变量在函数中运算改变以后，这个静态变量不会从内存中消失，保留的值是进行运算改变后的值。静态变量应用范围比较广，可以避免多次链接。 下面有一个thinkphp3.2版本的内置函数: 12345public function C($k,$v)&amp;#123">
@@ -366,7 +366,20 @@
 这个类里面的属性和方法前加 static。</em><br><br>
 反正我是没用过其他的，其中一个单例模式 还是有用到。传说中可以用作接口，还有说直接调用类里面的方法和属性，比实例化一个后再调用速度更快的，在我看来这种速度比较一文不值。</p>
 <p>单例模式的意义在于控制对象只能被实例化一次，并且是被自身new，防止外部new。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Link</span></span>&#123;    </span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">static</span> $link = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span>&#123; <span class="comment">//被自身调用的时候会触发 </span></span><br><span class="line">         <span class="keyword">$this</span>-&gt;link = mysql_connect(<span class="string">'localhost'</span>,<span class="string">'root'</span>,<span class="string">''</span>);    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">private</span> fucntion __clone()&#123;    &#125;    <span class="comment">//外部克隆自动触发这个方法，这个方法是私有，会报错。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getlink</span><span class="params">()</span></span>&#123;   <span class="comment">//没有链接资源就new自身创建一个资源，已经有的话直接返回。</span></span><br><span class="line">            <span class="keyword">if</span>($link==<span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">self</span> :: link = <span class="keyword">new</span> <span class="keyword">self</span>();</span><br><span class="line">    &#125;        </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>::link;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-PHP">class Link{    
+    protected static $link = null;
+    protected function __construct(){ //被自身调用的时候会触发 
+         $this-&gt;link = mysql_connect('localhost','root','');    
+    }    
+    private fucntion __clone(){    }    //外部克隆自动触发这个方法，这个方法是私有，会报错。
+    public static function getlink(){   //没有链接资源就new自身创建一个资源，已经有的话直接返回。
+            if($link==null){
+                self :: link = new self();
+    }        
+    return self::link;    
+    }
+}
+</code></pre>
 <p>这里用到了静态方法和静态变量，静态方法不用再被new了，直接调用Link::getlink(),就会返回一个链接资源，保存起来返回的值就可以直接使用了。</p>
 
       

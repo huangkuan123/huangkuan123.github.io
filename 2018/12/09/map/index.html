@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758func main() &amp;#123;        m := make(map[int]string) //初始化一个map    m[1] = &quot;ok&quot;//赋值        del">
+<meta name="description" content="func main() {         m := make(map[int]string) //初始化一个map     m[1] = &amp;quot;ok&amp;quot;//赋值         delete(m, 1)//删除m键为1的键值对     a := m         fmt.Println(a)         //m2 := make(map[int]map[int]string">
 <meta property="og:type" content="article">
 <meta property="og:title" content="map">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/map/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758func main() &amp;#123;        m := make(map[int]string) //初始化一个map    m[1] = &quot;ok&quot;//赋值        del">
+<meta property="og:description" content="func main() {         m := make(map[int]string) //初始化一个map     m[1] = &amp;quot;ok&amp;quot;//赋值         delete(m, 1)//删除m键为1的键值对     a := m         fmt.Println(a)         //m2 := make(map[int]map[int]string">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-c474e9d65802a87b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T12:37:37.849Z">
+<meta property="og:updated_time" content="2018-12-09T15:00:12.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="map">
-<meta name="twitter:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758func main() &amp;#123;        m := make(map[int]string) //初始化一个map    m[1] = &quot;ok&quot;//赋值        del">
+<meta name="twitter:description" content="func main() {         m := make(map[int]string) //初始化一个map     m[1] = &amp;quot;ok&amp;quot;//赋值         delete(m, 1)//删除m键为1的键值对     a := m         fmt.Println(a)         //m2 := make(map[int]map[int]string">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-c474e9d65802a87b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,66 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-c474e9d65802a87b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;    </span><br><span class="line">    m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>) <span class="comment">//初始化一个map</span></span><br><span class="line">    m[<span class="number">1</span>] = <span class="string">"ok"</span><span class="comment">//赋值    </span></span><br><span class="line">    <span class="built_in">delete</span>(m, <span class="number">1</span>)<span class="comment">//删除m键为1的键值对</span></span><br><span class="line">    a := m    </span><br><span class="line">    fmt.Println(a)    </span><br><span class="line">    <span class="comment">//m2 := make(map[int]map[int]string) //初始化一个二维map</span></span><br><span class="line">    <span class="comment">//m2[1][1] = "ok2"    </span></span><br><span class="line">    <span class="comment">//fmt.Println(m2)//在这里m2运行不了，报错信息为panic: assignment to entry in nil map</span></span><br><span class="line">    <span class="keyword">var</span> m2 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span><span class="comment">//定义一个二维数组的类型</span></span><br><span class="line">    m2 = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>) <span class="comment">//初始化这个map,定义类型与初始化概念    </span></span><br><span class="line">    m2[<span class="number">1</span>] = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)<span class="comment">//初始化内部数组，如果不初始化会报错，也就是说多维数组需要把内部map全部初始化，    </span></span><br><span class="line">    <span class="comment">//这里是将m2键为1的值初始化，之后如果有2号键，则需要对2也进行初始化    </span></span><br><span class="line">    <span class="comment">//这就肯定会有一个解决方案，在实际编码中我们是不会手动初始化一个未知个数的map的    </span></span><br><span class="line">    m2[<span class="number">1</span>][<span class="number">1</span>] = <span class="string">"ok2"</span>    </span><br><span class="line">    fmt.Println(m2)    </span><br><span class="line">    fmt.Println(m2[<span class="number">2</span>][<span class="number">1</span>]) <span class="comment">//这里可以看出返回的是一个空字符串    </span></span><br><span class="line">    fmt.Println(<span class="string">"结束"</span>)    </span><br><span class="line">    v, b := m2[<span class="number">2</span>][<span class="number">1</span>] <span class="comment">//多返回值的写法，v为键对应的值，b为这个值是否存在。</span></span><br><span class="line">    <span class="comment">//因为有些时候我们会给值认为赋值，而这个值恰巧就是空字符串。这里返回的false意味着并没有值    </span></span><br><span class="line">    fmt.Println(v, b)    </span><br><span class="line">    <span class="keyword">if</span> !b &#123;        </span><br><span class="line">        m2[<span class="number">2</span>] = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)    </span><br><span class="line">    &#125;    </span><br><span class="line">    m2[<span class="number">2</span>][<span class="number">1</span>] = <span class="string">""</span> <span class="comment">//如果不加以赋值，那么b还是为空,如果给予赋值，则为true，哪怕是人工赋值一个空字符串    </span></span><br><span class="line">    v, b = m2[<span class="number">2</span>][<span class="number">1</span>]    </span><br><span class="line">    fmt.Println(v, b)    </span><br><span class="line">    fmt.Println(<span class="string">"开始range"</span>)    </span><br><span class="line">    <span class="keyword">for</span> k, v := <span class="keyword">range</span> m2 &#123; <span class="comment">//for配合range可以实现php类似foreach的功能。</span></span><br><span class="line">    <span class="comment">//但是听讲课老师所说，好像range很神奇的样子...在php里foreach岂不是更强大        </span></span><br><span class="line">    fmt.Println(k, v) <span class="comment">//k为索引或者键，v为对应的值，循环出来的也只是一个对数据的拷贝。</span></span><br><span class="line">    <span class="comment">//在循环内修改k或者v的话是并不影响m2的，php的foreach同理        </span></span><br><span class="line">    <span class="comment">//如果循环内只需要k或者v可以在用下划线代替例如_,v:=range....，这里就省略了k只保留v。</span></span><br><span class="line">    <span class="comment">//如果只写一个返回值，那默认的就是返回索引或者说键了，这点和foreach相反    </span></span><br><span class="line">    &#125;    </span><br><span class="line">    m3 := <span class="built_in">make</span>([]<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>, <span class="number">5</span>) <span class="comment">//使用make创建一个slice,长度为5，golang推荐用make创建。</span></span><br><span class="line">    <span class="comment">//再回顾一下，第二个参数为长度，第三个参数为容量(可省略)    </span></span><br><span class="line">    <span class="comment">//m3代表创建了一个类型为map的slice,slice键为索引，值为map类型    </span></span><br><span class="line">    fmt.Println(m3)    </span><br><span class="line">    <span class="keyword">for</span> k := <span class="keyword">range</span> m3 &#123;        </span><br><span class="line">        m3[k] = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>) <span class="comment">//将slice中每一个值都初始化,</span></span><br><span class="line">        m3[k][<span class="number">1</span>] = <span class="string">"直直"</span><span class="comment">//将这个map索引为1的赋值    </span></span><br><span class="line">    &#125;    </span><br><span class="line">    fmt.Println(m3)    </span><br><span class="line">    fmt.Println(<span class="string">"如何对map进行排序"</span>)<span class="comment">//map的无序性    </span></span><br><span class="line">    m4 := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;<span class="number">1</span>: <span class="string">"a"</span>, <span class="number">2</span>: <span class="string">"b"</span>, <span class="number">3</span>: <span class="string">"c"</span>, <span class="number">4</span>: <span class="string">"d"</span>, <span class="number">5</span>: <span class="string">"e"</span>&#125;    </span><br><span class="line">    <span class="keyword">for</span> k, v := <span class="keyword">range</span> m4 &#123;        </span><br><span class="line">        fmt.Println(k, v)    </span><br><span class="line">    &#125; <span class="comment">//在这里多重复几次，可以看出并不是按照顺序来打印的    </span></span><br><span class="line">    <span class="comment">//问题，map具有无序性，那么如果对map进行排序,思路，for循环维护一计数机和一个切片    </span></span><br><span class="line">    s := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="built_in">len</span>(m4))    </span><br><span class="line">    i := <span class="number">0</span>    </span><br><span class="line">    <span class="keyword">for</span> k := <span class="keyword">range</span> m4 &#123;</span><br><span class="line">        s[i] = k       </span><br><span class="line">         i += <span class="number">1</span>    </span><br><span class="line">    &#125;    </span><br><span class="line">    sort.Ints(s) <span class="comment">//引入sort包，对切片值进行排序    </span></span><br><span class="line">    fmt.Println(s)&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-golang">func main() {    
+    m := make(map[int]string) //初始化一个map
+    m[1] = &quot;ok&quot;//赋值    
+    delete(m, 1)//删除m键为1的键值对
+    a := m    
+    fmt.Println(a)    
+    //m2 := make(map[int]map[int]string) //初始化一个二维map
+    //m2[1][1] = &quot;ok2&quot;    
+    //fmt.Println(m2)//在这里m2运行不了，报错信息为panic: assignment to entry in nil map
+    var m2 map[int]map[int]string//定义一个二维数组的类型
+    m2 = make(map[int]map[int]string) //初始化这个map,定义类型与初始化概念    
+    m2[1] = make(map[int]string)//初始化内部数组，如果不初始化会报错，也就是说多维数组需要把内部map全部初始化，    
+    //这里是将m2键为1的值初始化，之后如果有2号键，则需要对2也进行初始化    
+    //这就肯定会有一个解决方案，在实际编码中我们是不会手动初始化一个未知个数的map的    
+    m2[1][1] = &quot;ok2&quot;    
+    fmt.Println(m2)    
+    fmt.Println(m2[2][1]) //这里可以看出返回的是一个空字符串    
+    fmt.Println(&quot;结束&quot;)    
+    v, b := m2[2][1] //多返回值的写法，v为键对应的值，b为这个值是否存在。
+    //因为有些时候我们会给值认为赋值，而这个值恰巧就是空字符串。这里返回的false意味着并没有值    
+    fmt.Println(v, b)    
+    if !b {        
+        m2[2] = make(map[int]string)    
+    }    
+    m2[2][1] = &quot;&quot; //如果不加以赋值，那么b还是为空,如果给予赋值，则为true，哪怕是人工赋值一个空字符串    
+    v, b = m2[2][1]    
+    fmt.Println(v, b)    
+    fmt.Println(&quot;开始range&quot;)    
+    for k, v := range m2 { //for配合range可以实现php类似foreach的功能。
+    //但是听讲课老师所说，好像range很神奇的样子...在php里foreach岂不是更强大        
+    fmt.Println(k, v) //k为索引或者键，v为对应的值，循环出来的也只是一个对数据的拷贝。
+    //在循环内修改k或者v的话是并不影响m2的，php的foreach同理        
+    //如果循环内只需要k或者v可以在用下划线代替例如_,v:=range....，这里就省略了k只保留v。
+    //如果只写一个返回值，那默认的就是返回索引或者说键了，这点和foreach相反    
+    }    
+    m3 := make([]map[int]string, 5) //使用make创建一个slice,长度为5，golang推荐用make创建。
+    //再回顾一下，第二个参数为长度，第三个参数为容量(可省略)    
+    //m3代表创建了一个类型为map的slice,slice键为索引，值为map类型    
+    fmt.Println(m3)    
+    for k := range m3 {        
+        m3[k] = make(map[int]string) //将slice中每一个值都初始化,
+        m3[k][1] = &quot;直直&quot;//将这个map索引为1的赋值    
+    }    
+    fmt.Println(m3)    
+    fmt.Println(&quot;如何对map进行排序&quot;)//map的无序性    
+    m4 := map[int]string{1: &quot;a&quot;, 2: &quot;b&quot;, 3: &quot;c&quot;, 4: &quot;d&quot;, 5: &quot;e&quot;}    
+    for k, v := range m4 {        
+        fmt.Println(k, v)    
+    } //在这里多重复几次，可以看出并不是按照顺序来打印的    
+    //问题，map具有无序性，那么如果对map进行排序,思路，for循环维护一计数机和一个切片    
+    s := make([]int, len(m4))    
+    i := 0    
+    for k := range m4 {
+        s[i] = k       
+         i += 1    
+    }    
+    sort.Ints(s) //引入sort包，对切片值进行排序    
+    fmt.Println(s)}
+</code></pre>
+
       
     </div>
     

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455type client chan&amp;lt;- string  // send only channelvar (">
+<meta name="description" content="代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解  type client chan&amp;lt;- string  // send only channel var (     entering = make(chan client)     leaving = make(chan client)     messages = make(chan string)     )">
 <meta property="og:type" content="article">
 <meta property="og:title" content="利用chan与go做简陋聊天室">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/利用chan与go做简陋聊天室/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455type client chan&amp;lt;- string  // send only channelvar (">
+<meta property="og:description" content="代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解  type client chan&amp;lt;- string  // send only channel var (     entering = make(chan client)     leaving = make(chan client)     messages = make(chan string)     )">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-31c2565c1d7eb422.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:48:50.445Z">
+<meta property="og:updated_time" content="2018-12-09T14:59:33.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用chan与go做简陋聊天室">
-<meta name="twitter:description" content="代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455type client chan&amp;lt;- string  // send only channelvar (">
+<meta name="twitter:description" content="代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解  type client chan&amp;lt;- string  // send only channel var (     entering = make(chan client)     leaving = make(chan client)     messages = make(chan string)     )">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-31c2565c1d7eb422.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -357,7 +357,63 @@
 <blockquote>
 <p>代码节选与 GO语言圣经 这本书的案例,我在这里做注释和自己对代码的理解</p>
 </blockquote>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">type client chan&lt;- string  <span class="comment">// send only channel</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    entering = make(chan client)</span><br><span class="line">    leaving = make(chan client)</span><br><span class="line">    messages = make(chan string)</span><br><span class="line">    )</span><br><span class="line">func main() &#123;</span><br><span class="line">    listener,err := net.Listen(<span class="string">"tcp"</span>,<span class="string">"0.0.0.0:8888"</span>)</span><br><span class="line">    <span class="keyword">if</span> err != nil &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    go broadcaster()<span class="comment">//单独起一个go开始广播监听(异步，函数内部不停的select监听各类消息)   </span></span><br><span class="line">    <span class="keyword">for</span>&#123;<span class="comment">//这里不停的监听新链接      </span></span><br><span class="line">        conn,err := listener.Accept()</span><br><span class="line">        <span class="keyword">if</span> err != nil &#123;</span><br><span class="line">            fmt.Fprintf(os.Stdout,<span class="string">"you got something wrong %v"</span>,err)</span><br><span class="line">            <span class="keyword">continue</span>      </span><br><span class="line">            &#125;</span><br><span class="line">        go handleConn(conn)<span class="comment">//监听每一个链接上来的链接交由handleconn处理   </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">func broadcaster() &#123;</span><br><span class="line">    clients := make(map[client]bool)<span class="comment">//all connected clients   </span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        select &#123;</span><br><span class="line">            <span class="keyword">case</span> msg := &lt;- messages:</span><br><span class="line">                <span class="keyword">for</span> cli := range clients&#123;</span><br><span class="line">                    cli &lt;- msg         </span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">case</span> cli := &lt;- entering:</span><br><span class="line">                clients[cli]= <span class="keyword">true</span><span class="comment">//将新加入的链接存到clients里      </span></span><br><span class="line">            <span class="keyword">case</span> cli := &lt;- leaving:</span><br><span class="line">                delete(clients,cli)close(cli)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">func handleConn(conn net.Conn) &#123;<span class="comment">//每个客户端保证一个handleconn   </span></span><br><span class="line">    ch := make(chan string)</span><br><span class="line">    go clientWriter(conn,ch)</span><br><span class="line">    who := conn.RemoteAddr().String()</span><br><span class="line">    ch &lt;- <span class="string">"You are "</span> + who   messages &lt;- who + <span class="string">" has joined us"</span><span class="comment">//只要一有消息来就存到全局变量messages里面去开始广播欢迎消息   </span></span><br><span class="line">    entering &lt;- ch<span class="comment">//将新chan存入entering这个特殊结构中   </span></span><br><span class="line">    input := bufio.NewScanner(conn)<span class="keyword">for</span> input.Scan() &#123;<span class="comment">//这里不停的接受该链接用户传递过来的消息      </span></span><br><span class="line">        messages &lt;- who + <span class="string">": "</span> + input.Text()<span class="comment">//再次存入客户端输入的消息文本,广播函数再次收到信号   </span></span><br><span class="line">        &#125;</span><br><span class="line">    leaving &lt;- ch<span class="comment">//如果客户端关闭了标准输入，那么把队列离开写入leaving交给广播函数去删除这个客户端并关闭这个客户端。</span></span><br><span class="line">    <span class="comment">//广播这个人的离开给所有人。   </span></span><br><span class="line">    messages &lt;- who + <span class="string">" has left "</span></span><br><span class="line">    conn.Close()</span><br><span class="line">&#125;</span><br><span class="line">func clientWriter(conn net.Conn,ch &lt;-chan string) &#123;</span><br><span class="line"><span class="keyword">for</span> msg := range ch &#123;</span><br><span class="line">    fmt.Fprintln(conn,msg)<span class="comment">// <span class="doctag">NOTE:</span> ignoring network errors   </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-php">type client chan&lt;- string  // send only channel
+var (
+    entering = make(chan client)
+    leaving = make(chan client)
+    messages = make(chan string)
+    )
+func main() {
+    listener,err := net.Listen(&quot;tcp&quot;,&quot;0.0.0.0:8888&quot;)
+    if err != nil {
+        log.Fatal(err)
+    }
+    go broadcaster()//单独起一个go开始广播监听(异步，函数内部不停的select监听各类消息)   
+    for{//这里不停的监听新链接      
+        conn,err := listener.Accept()
+        if err != nil {
+            fmt.Fprintf(os.Stdout,&quot;you got something wrong %v&quot;,err)
+            continue      
+            }
+        go handleConn(conn)//监听每一个链接上来的链接交由handleconn处理   
+    }
+}
+func broadcaster() {
+    clients := make(map[client]bool)//all connected clients   
+    for {
+        select {
+            case msg := &lt;- messages:
+                for cli := range clients{
+                    cli &lt;- msg         
+                }
+            case cli := &lt;- entering:
+                clients[cli]= true//将新加入的链接存到clients里      
+            case cli := &lt;- leaving:
+                delete(clients,cli)close(cli)
+        }
+    }
+}
+func handleConn(conn net.Conn) {//每个客户端保证一个handleconn   
+    ch := make(chan string)
+    go clientWriter(conn,ch)
+    who := conn.RemoteAddr().String()
+    ch &lt;- &quot;You are &quot; + who   messages &lt;- who + &quot; has joined us&quot;//只要一有消息来就存到全局变量messages里面去开始广播欢迎消息   
+    entering &lt;- ch//将新chan存入entering这个特殊结构中   
+    input := bufio.NewScanner(conn)for input.Scan() {//这里不停的接受该链接用户传递过来的消息      
+        messages &lt;- who + &quot;: &quot; + input.Text()//再次存入客户端输入的消息文本,广播函数再次收到信号   
+        }
+    leaving &lt;- ch//如果客户端关闭了标准输入，那么把队列离开写入leaving交给广播函数去删除这个客户端并关闭这个客户端。
+    //广播这个人的离开给所有人。   
+    messages &lt;- who + &quot; has left &quot;
+    conn.Close()
+}
+func clientWriter(conn net.Conn,ch &lt;-chan string) {
+for msg := range ch {
+    fmt.Fprintln(conn,msg)// NOTE: ignoring network errors   
+    }
+}
+</code></pre>
+
       
     </div>
     

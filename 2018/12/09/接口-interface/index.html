@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970type USB interface &amp;#123; //定义一个接口        Name()        Connect()">
+<meta name="description" content="type USB interface { //定义一个接口         Name()         Connect()     } type USBa interface { //定义一个接口做Disconnect测试         Name()         Connecte     } type Connecte interface { //嵌入到USBa当中         Co">
 <meta property="og:type" content="article">
 <meta property="og:title" content="接口 interface">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/接口-interface/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970type USB interface &amp;#123; //定义一个接口        Name()        Connect()">
+<meta property="og:description" content="type USB interface { //定义一个接口         Name()         Connect()     } type USBa interface { //定义一个接口做Disconnect测试         Name()         Connecte     } type Connecte interface { //嵌入到USBa当中         Co">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-efb9c82872720041.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:16:53.122Z">
+<meta property="og:updated_time" content="2018-12-09T15:00:12.325Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="接口 interface">
-<meta name="twitter:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970type USB interface &amp;#123; //定义一个接口        Name()        Connect()">
+<meta name="twitter:description" content="type USB interface { //定义一个接口         Name()         Connect()     } type USBa interface { //定义一个接口做Disconnect测试         Name()         Connecte     } type Connecte interface { //嵌入到USBa当中         Co">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-efb9c82872720041.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,77 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-efb9c82872720041.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">type USB <span class="class"><span class="keyword">interface</span> </span>&#123; <span class="comment">//定义一个接口    </span></span><br><span class="line">    Name()    </span><br><span class="line">    Connect()</span><br><span class="line">    &#125;</span><br><span class="line">type USBa <span class="class"><span class="keyword">interface</span> </span>&#123; <span class="comment">//定义一个接口做Disconnect测试    </span></span><br><span class="line">    Name()    </span><br><span class="line">    Connecte</span><br><span class="line">    &#125;</span><br><span class="line">type Connecte <span class="class"><span class="keyword">interface</span> </span>&#123; <span class="comment">//嵌入到USBa当中    </span></span><br><span class="line">    Connect()</span><br><span class="line">    &#125;</span><br><span class="line">type PC struct &#123;    </span><br><span class="line">    name string</span><br><span class="line">    &#125;</span><br><span class="line">func (a PC) Name() &#123;    </span><br><span class="line">    fmt.Println(a.name)</span><br><span class="line">    &#125;</span><br><span class="line">func (a PC) Connect() &#123;    </span><br><span class="line">    fmt.Println(<span class="string">"已成功连接pc"</span>, a.name)</span><br><span class="line">    &#125;</span><br><span class="line">type Phone struct &#123; <span class="comment">//定义一个结构体，可以简单的理解为php里的类    </span></span><br><span class="line">    name string</span><br><span class="line">    &#125;</span><br><span class="line">func (a Phone) Name() &#123; <span class="comment">//将Name方法绑定到a这个结构体中    </span></span><br><span class="line">    fmt.Println(a.name)</span><br><span class="line">    &#125;</span><br><span class="line">func (a Phone) Connect() &#123; <span class="comment">//同时将connect绑定到这个结构体中    </span></span><br><span class="line">    <span class="comment">//只要这个结构体绑定了某个接口的所有方法，则默认实现了该接口，若定一个没有方法的结构则默认所有结构都实现了该结构    </span></span><br><span class="line">    fmt.Println(<span class="string">"已成功连接上您的:"</span>, a.name)</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;    </span><br><span class="line">    <span class="keyword">var</span> a USB    </span><br><span class="line">    a = Phone&#123;<span class="string">"iphone"</span>&#125; <span class="comment">//实现一个结构体定义其name，在这里可以简单的理解为a是实现了一个接口的对象    </span></span><br><span class="line">    a.Name()    </span><br><span class="line">    a.Connect()    <span class="comment">//上面可以简写为以下代码    </span></span><br><span class="line">    <span class="comment">//a:=Phone&#123;"iphone"&#125;但是这样并不直观，因为并不知道这个a是否实现了USB接口，如果没有实现    </span></span><br><span class="line">    <span class="comment">//那必然调用不了该接口的所有方法，所以我们需要一个检测是否实现了该接口的方法disconnect    </span></span><br><span class="line">    <span class="keyword">var</span> b USBa    </span><br><span class="line">    b = PC&#123;<span class="string">"smartisan"</span>&#125;    </span><br><span class="line">    Disconnect(b)</span><br><span class="line">&#125;</span><br><span class="line">func Disconnect(usb USBa) &#123; <span class="comment">//做一个断开连接的方法，要求传进来一个实现了usba接口的结构    </span></span><br><span class="line">    <span class="keyword">if</span> st, ok := usb.(PC);ok &#123; <span class="comment">//这里可以简单的理解为接收到一个实现了usba的结构        </span></span><br><span class="line">    <span class="comment">//这种模式叫ok pattern        </span></span><br><span class="line">    <span class="comment">//传进来一个结构体，可以看到这个结构体有没有实现该接口,ok返回状态st为该实例        </span></span><br><span class="line">    fmt.Println(<span class="string">"已断开您的"</span>, st.name) <span class="comment">//能走到这里说明已经能取到st的name了而usb接口这一层是没有name这个属性的    </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">//这里有点想不明白既然传进来的必须是一个已经实现了该接口应该是没必要再做一个disconnect以近乎一种</span></span><br><span class="line"><span class="comment">//类似与一个杯子非要等装满水后才能判断这个杯子可不可以装水。经过测试没有实现该接口而穿进来一个结构体的话是会报错的</span></span><br><span class="line"><span class="comment">//讲道理的话代码应当如下</span></span><br><span class="line">type Stringer <span class="class"><span class="keyword">interface</span> </span>&#123;</span><br><span class="line">   String() string</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> sv, ok := v.(Stringer); ok &#123;</span><br><span class="line">    fmt.Printf(<span class="string">"v implements String(): %s\n"</span>, sv.String())</span><br><span class="line">  <span class="comment">//打印<span class="doctag">note:</span> sv, not v</span></span><br><span class="line">  &#125;</span><br><span class="line">  disconnect的传入类型必须是一个结构体抑或是一个空接口才合理！</span><br><span class="line">  下面是一个type <span class="keyword">switch</span>判断该结构实现了哪种接口</span><br><span class="line">func Disconnect_Type_Switch(usb <span class="class"><span class="keyword">interface</span></span>&#123;&#125;) &#123;    </span><br><span class="line">    <span class="keyword">switch</span> v := usb.(type) &#123;    </span><br><span class="line">        <span class="keyword">case</span> Phone:        </span><br><span class="line">            fmt.Println(v.name)    </span><br><span class="line">        <span class="keyword">case</span> PC:        </span><br><span class="line">            fmt.Println(v.name)    </span><br><span class="line">        <span class="keyword">default</span>:        </span><br><span class="line">            fmt.Println(<span class="string">"两个接口都没有实现"</span>)    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-PHP">type USB interface { //定义一个接口    
+    Name()    
+    Connect()
+    }
+type USBa interface { //定义一个接口做Disconnect测试    
+    Name()    
+    Connecte
+    }
+type Connecte interface { //嵌入到USBa当中    
+    Connect()
+    }
+type PC struct {    
+    name string
+    }
+func (a PC) Name() {    
+    fmt.Println(a.name)
+    }
+func (a PC) Connect() {    
+    fmt.Println(&quot;已成功连接pc&quot;, a.name)
+    }
+type Phone struct { //定义一个结构体，可以简单的理解为php里的类    
+    name string
+    }
+func (a Phone) Name() { //将Name方法绑定到a这个结构体中    
+    fmt.Println(a.name)
+    }
+func (a Phone) Connect() { //同时将connect绑定到这个结构体中    
+    //只要这个结构体绑定了某个接口的所有方法，则默认实现了该接口，若定一个没有方法的结构则默认所有结构都实现了该结构    
+    fmt.Println(&quot;已成功连接上您的:&quot;, a.name)
+}
+func main() {    
+    var a USB    
+    a = Phone{&quot;iphone&quot;} //实现一个结构体定义其name，在这里可以简单的理解为a是实现了一个接口的对象    
+    a.Name()    
+    a.Connect()    //上面可以简写为以下代码    
+    //a:=Phone{&quot;iphone&quot;}但是这样并不直观，因为并不知道这个a是否实现了USB接口，如果没有实现    
+    //那必然调用不了该接口的所有方法，所以我们需要一个检测是否实现了该接口的方法disconnect    
+    var b USBa    
+    b = PC{&quot;smartisan&quot;}    
+    Disconnect(b)
+}
+func Disconnect(usb USBa) { //做一个断开连接的方法，要求传进来一个实现了usba接口的结构    
+    if st, ok := usb.(PC);ok { //这里可以简单的理解为接收到一个实现了usba的结构        
+    //这种模式叫ok pattern        
+    //传进来一个结构体，可以看到这个结构体有没有实现该接口,ok返回状态st为该实例        
+    fmt.Println(&quot;已断开您的&quot;, st.name) //能走到这里说明已经能取到st的name了而usb接口这一层是没有name这个属性的    
+    }
+} 
+//这里有点想不明白既然传进来的必须是一个已经实现了该接口应该是没必要再做一个disconnect以近乎一种
+//类似与一个杯子非要等装满水后才能判断这个杯子可不可以装水。经过测试没有实现该接口而穿进来一个结构体的话是会报错的
+//讲道理的话代码应当如下
+type Stringer interface {
+   String() string
+}
+if sv, ok := v.(Stringer); ok {
+    fmt.Printf(&quot;v implements String(): %s\n&quot;, sv.String())
+  //打印note: sv, not v
+  }
+  disconnect的传入类型必须是一个结构体抑或是一个空接口才合理！
+  下面是一个type switch判断该结构实现了哪种接口
+func Disconnect_Type_Switch(usb interface{}) {    
+    switch v := usb.(type) {    
+        case Phone:        
+            fmt.Println(v.name)    
+        case PC:        
+            fmt.Println(v.name)    
+        default:        
+            fmt.Println(&quot;两个接口都没有实现&quot;)    
+    }
+}
+</code></pre>
 
       
     </div>

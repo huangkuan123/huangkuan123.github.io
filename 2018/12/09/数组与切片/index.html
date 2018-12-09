@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435a := [10]int&amp;#123;1, 2, 3, 4, 5, 6, 7, 8, 9, 10&amp;#125; //初始化一个数组    b := a[5:10]//从a切片    fmt.Println(a)    fmt.Println(b)    c := make([]i">
+<meta name="description" content="a := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} //初始化一个数组     b := a[5:10]//从a切片     fmt.Println(a)     fmt.Println(b)     c := make([]int, 1, 10)//第一个参数为类型，切片。第二参数为默认元素个数。第三个参数为最大容量，可以不设置默认为默认元素个数 d :=">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组与切片">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/数组与切片/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435a := [10]int&amp;#123;1, 2, 3, 4, 5, 6, 7, 8, 9, 10&amp;#125; //初始化一个数组    b := a[5:10]//从a切片    fmt.Println(a)    fmt.Println(b)    c := make([]i">
+<meta property="og:description" content="a := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} //初始化一个数组     b := a[5:10]//从a切片     fmt.Println(a)     fmt.Println(b)     c := make([]int, 1, 10)//第一个参数为类型，切片。第二参数为默认元素个数。第三个参数为最大容量，可以不设置默认为默认元素个数 d :=">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-c6a594a6b21aa731.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T12:30:17.851Z">
+<meta property="og:updated_time" content="2018-12-09T15:01:12.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数组与切片">
-<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435a := [10]int&amp;#123;1, 2, 3, 4, 5, 6, 7, 8, 9, 10&amp;#125; //初始化一个数组    b := a[5:10]//从a切片    fmt.Println(a)    fmt.Println(b)    c := make([]i">
+<meta name="twitter:description" content="a := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} //初始化一个数组     b := a[5:10]//从a切片     fmt.Println(a)     fmt.Println(b)     c := make([]int, 1, 10)//第一个参数为类型，切片。第二参数为默认元素个数。第三个参数为最大容量，可以不设置默认为默认元素个数 d :=">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-c6a594a6b21aa731.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,42 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-c6a594a6b21aa731.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">a := [<span class="number">10</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>&#125; <span class="comment">//初始化一个数组    </span></span><br><span class="line">b := a[<span class="number">5</span>:<span class="number">10</span>]<span class="comment">//从a切片    </span></span><br><span class="line">fmt.Println(a)    </span><br><span class="line">fmt.Println(b)    </span><br><span class="line">c := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">1</span>, <span class="number">10</span>)<span class="comment">//第一个参数为类型，切片。第二参数为默认元素个数。第三个参数为最大容量，可以不设置默认为默认元素个数</span></span><br><span class="line">d := a[<span class="number">7</span>:<span class="number">8</span>]<span class="comment">//从a中切片    </span></span><br><span class="line">fmt.Println(d, <span class="built_in">len</span>(d), <span class="built_in">cap</span>(d)) <span class="comment">//*l-1</span></span><br><span class="line">fmt.Println(<span class="built_in">len</span>(c), <span class="built_in">cap</span>(c), reflect.TypeOf(c))</span><br><span class="line">fmt.Println(<span class="string">"在这里换行,下面做append和切片重新分配容量实验*l-2"</span>)</span><br><span class="line">fmt.Printf(<span class="string">"%p\n"</span>, c)    </span><br><span class="line">fmt.Println(<span class="built_in">len</span>(c), <span class="built_in">cap</span>(c))    </span><br><span class="line">c = <span class="built_in">append</span>(c, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)    </span><br><span class="line">fmt.Printf(<span class="string">"%p\n"</span>, c)    </span><br><span class="line">fmt.Println(<span class="built_in">len</span>(c), <span class="built_in">cap</span>(c))    </span><br><span class="line">c = <span class="built_in">append</span>(c, <span class="number">10</span>)    </span><br><span class="line">fmt.Printf(<span class="string">"%p\n"</span>, c)    </span><br><span class="line">fmt.Println(<span class="built_in">len</span>(c), <span class="built_in">cap</span>(c))    </span><br><span class="line">fmt.Println(<span class="string">"在这里换行,下面做切片为底层数组实验*l-3"</span>)    </span><br><span class="line">e := []<span class="keyword">int</span>&#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>&#125;    </span><br><span class="line">se1 := e[<span class="number">2</span>:<span class="number">6</span>]    se2 := e[<span class="number">1</span>:<span class="number">3</span>]    </span><br><span class="line">fmt.Println(se1)    </span><br><span class="line">fmt.Println(se2) <span class="comment">//在这里se1与se2都拥有30这个值，那么如果更改30这个值，e,se1,se2会有什么变化?    </span></span><br><span class="line">se1[<span class="number">0</span>] = <span class="number">300</span>    </span><br><span class="line">fmt.Println(e, se1, se2)    </span><br><span class="line">fmt.Println(<span class="string">"在这里换行,下面做切片为底层数组实验*l-4"</span>)    </span><br><span class="line">e1 := []<span class="keyword">int</span>&#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>&#125;    </span><br><span class="line">se3 := e1[<span class="number">2</span>:<span class="number">6</span>]    se4 := e1[<span class="number">1</span>:<span class="number">3</span>]    </span><br><span class="line">se4 = <span class="built_in">append</span>(se4, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)    </span><br><span class="line">se3[<span class="number">0</span>] = <span class="number">100</span>    </span><br><span class="line">fmt.Println(e1, se3, se4) <span class="comment">//在这里可以看到更改se3的值，并没有影响到se4    </span></span><br><span class="line">fmt.Println(<span class="string">"在这里换行,下面做copy实验*l-5"</span>)    </span><br><span class="line">f := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;    </span><br><span class="line">g := []<span class="keyword">int</span>&#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;    </span><br><span class="line"><span class="built_in">copy</span>(f, g)    </span><br><span class="line">fmt.Println(f) <span class="comment">//在这里可以看到f变成三个元素了</span></span><br></pre></td></tr></table></figure>
+<pre><code class="language-golang">a := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} //初始化一个数组    
+b := a[5:10]//从a切片    
+fmt.Println(a)    
+fmt.Println(b)    
+c := make([]int, 1, 10)//第一个参数为类型，切片。第二参数为默认元素个数。第三个参数为最大容量，可以不设置默认为默认元素个数
+d := a[7:8]//从a中切片    
+fmt.Println(d, len(d), cap(d)) //*l-1
+fmt.Println(len(c), cap(c), reflect.TypeOf(c))
+fmt.Println(&quot;在这里换行,下面做append和切片重新分配容量实验*l-2&quot;)
+fmt.Printf(&quot;%p\n&quot;, c)    
+fmt.Println(len(c), cap(c))    
+c = append(c, 1, 2, 3, 4, 5, 6, 7, 8, 9)    
+fmt.Printf(&quot;%p\n&quot;, c)    
+fmt.Println(len(c), cap(c))    
+c = append(c, 10)    
+fmt.Printf(&quot;%p\n&quot;, c)    
+fmt.Println(len(c), cap(c))    
+fmt.Println(&quot;在这里换行,下面做切片为底层数组实验*l-3&quot;)    
+e := []int{10, 20, 30, 40, 50, 60}    
+se1 := e[2:6]    se2 := e[1:3]    
+fmt.Println(se1)    
+fmt.Println(se2) //在这里se1与se2都拥有30这个值，那么如果更改30这个值，e,se1,se2会有什么变化?    
+se1[0] = 300    
+fmt.Println(e, se1, se2)    
+fmt.Println(&quot;在这里换行,下面做切片为底层数组实验*l-4&quot;)    
+e1 := []int{10, 20, 30, 40, 50, 60}    
+se3 := e1[2:6]    se4 := e1[1:3]    
+se4 = append(se4, 1, 2, 3, 4)    
+se3[0] = 100    
+fmt.Println(e1, se3, se4) //在这里可以看到更改se3的值，并没有影响到se4    
+fmt.Println(&quot;在这里换行,下面做copy实验*l-5&quot;)    
+f := []int{1, 2, 3}    
+g := []int{4, 5, 6, 7, 8}    
+copy(f, g)    
+fmt.Println(f) //在这里可以看到f变成三个元素了
+</code></pre>
 <p>b等于a的第四个元素到最后一个元素。这是取数组的一部分出来,也可以写作a[5:],a[5:len(a)],取前五个元素[:5]。<br><br>
 具体可以看做后一个数减去前一个数等于取出个数，前一个数为索引开始<br><br>
 切片可作为一个变长数组来看，分配了最大容量，当实际元素大于最大容量时，最大容量会翻倍，也就是重新分配内存地址，并重新拷贝数据<br><br>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960type person struct &amp;#123;        Name string        Age  int    &amp;#125;type user struct &amp;">
+<meta name="description" content="type person struct {         Name string         Age  int     } type user struct {     Name string         Age  int         Info struct { //结构体嵌套一个匿名结构体             Phone string                     C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="结构struct">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/结构struct/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960type person struct &amp;#123;        Name string        Age  int    &amp;#125;type user struct &amp;">
+<meta property="og:description" content="type person struct {         Name string         Age  int     } type user struct {     Name string         Age  int         Info struct { //结构体嵌套一个匿名结构体             Phone string                     C">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-26bf3cb5ec3f28af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:04:20.342Z">
+<meta property="og:updated_time" content="2018-12-09T14:59:00.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="结构struct">
-<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960type person struct &amp;#123;        Name string        Age  int    &amp;#125;type user struct &amp;">
+<meta name="twitter:description" content="type person struct {         Name string         Age  int     } type user struct {     Name string         Age  int         Info struct { //结构体嵌套一个匿名结构体             Phone string                     C">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-26bf3cb5ec3f28af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,68 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-26bf3cb5ec3f28af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span> &#123;    </span><br><span class="line">    Name <span class="keyword">string</span>    </span><br><span class="line">    Age  <span class="keyword">int</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">type</span> user <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span>    </span><br><span class="line">    Age  <span class="keyword">int</span>    </span><br><span class="line">    Info <span class="keyword">struct</span> &#123; <span class="comment">//结构体嵌套一个匿名结构体</span></span><br><span class="line">            Phone <span class="keyword">string</span>        </span><br><span class="line">            City  <span class="keyword">string</span>    </span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> test <span class="keyword">struct</span> &#123; <span class="comment">//声明一个匿名字段struct    </span></span><br><span class="line">    <span class="keyword">string</span>    </span><br><span class="line">    <span class="keyword">int</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">type</span> human <span class="keyword">struct</span> &#123;</span><br><span class="line">    Sex  <span class="keyword">string</span>    </span><br><span class="line">    Name <span class="keyword">string</span>    </span><br><span class="line">    Age  <span class="keyword">int</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;    </span><br><span class="line">    human    </span><br><span class="line">    Parent_phone <span class="keyword">string</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">type</span> teacher <span class="keyword">struct</span> &#123;    </span><br><span class="line">    human   <span class="comment">//将上面的human组合进来    </span></span><br><span class="line">    Subject <span class="keyword">string</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;    <span class="comment">//struct结构体    </span></span><br><span class="line">    a := person&#123;Name: <span class="string">"hk"</span>&#125; <span class="comment">//可以把这个struct看做成一个php对象与json对象的组合</span></span><br><span class="line">    a.Age = <span class="number">13</span>              <span class="comment">//可以这样用.取值和赋值    </span></span><br><span class="line">    fmt.Println(a)    A(a)           <span class="comment">//从这里能够看出来，这里传递过去的是一个值的拷贝，在A函数里面对这个struct的修改并不会影响到a    </span></span><br><span class="line">    fmt.Println(a) <span class="comment">//如果加&amp;符号，则是引用传递，修改就会改变原有的值    </span></span><br><span class="line">    b := <span class="keyword">struct</span> &#123;  <span class="comment">//匿名结构体        </span></span><br><span class="line">            Name <span class="keyword">string</span>        </span><br><span class="line">            Age  <span class="keyword">int</span>    </span><br><span class="line">            &#125;&#123; <span class="comment">//在声明struct的同时，可以声明值        </span></span><br><span class="line">            Name: <span class="string">"pp"</span>,        </span><br><span class="line">            Age:  <span class="number">11</span>, <span class="comment">//这里结尾必须要加上逗号    </span></span><br><span class="line">            &#125;    </span><br><span class="line">    fmt.Println(b)    </span><br><span class="line">    c := user&#123;Name: <span class="string">"pys"</span>, Age: <span class="number">14</span>&#125; <span class="comment">//第一层可以这样给结构体内的字段赋值    </span></span><br><span class="line">    c.Info.Phone = <span class="string">"iphone4s"</span>       <span class="comment">//匿名结构体只能用这种方式给赋值    </span></span><br><span class="line">    c.Info.City = <span class="string">"shanghai"</span>    </span><br><span class="line">    fmt.Println(c)    </span><br><span class="line">    d := test&#123;<span class="string">"test"</span>, <span class="number">4</span>&#125; <span class="comment">//匿名字段结构体直接按照声明字段顺序赋值    </span></span><br><span class="line">    <span class="keyword">var</span> e test    </span><br><span class="line">    e = d <span class="comment">//同个struct可以直接赋值,非同个struct不可以进行比较    </span></span><br><span class="line">    fmt.Println(d == e)    <span class="comment">//golang之中没有面向对象,但是可以通过一些特性实现一些面向对象的特性例如继承，在go里面叫包含    </span></span><br><span class="line">    <span class="comment">//上面声明了三个结构，human,studen,teacher,按面向对象来做的话，他们都需要继承human，因为    //human里的属性包含了一个人最基本的属性，但是学生和老师又不一样    </span></span><br><span class="line">    t1 := teacher&#123;Subject: <span class="string">"语文"</span>, human: human&#123;Sex: <span class="string">"男"</span>&#125;&#125; <span class="comment">//对于有组合的结构体来说    </span></span><br><span class="line">    <span class="comment">//这个human只是一个字段,后一个human才代表human这个结构体,所以可以这样赋值    </span></span><br><span class="line">    t1.Age = <span class="number">15</span> <span class="comment">//因为是组合过来的，所以也可以这样赋值    </span></span><br><span class="line">    fmt.Println(t1)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">A</span><span class="params">(per person)</span></span> &#123;    </span><br><span class="line">    per.Age = <span class="number">19</span>    </span><br><span class="line">    fmt.Println(per)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-golang">type person struct {    
+    Name string    
+    Age  int
+    }
+type user struct {
+    Name string    
+    Age  int    
+    Info struct { //结构体嵌套一个匿名结构体
+            Phone string        
+            City  string    
+        }
+}
+type test struct { //声明一个匿名字段struct    
+    string    
+    int
+    }
+type human struct {
+    Sex  string    
+    Name string    
+    Age  int
+    }
+type student struct {    
+    human    
+    Parent_phone string
+    }
+type teacher struct {    
+    human   //将上面的human组合进来    
+    Subject string
+    }
+func main() {    //struct结构体    
+    a := person{Name: &quot;hk&quot;} //可以把这个struct看做成一个php对象与json对象的组合
+    a.Age = 13              //可以这样用.取值和赋值    
+    fmt.Println(a)    A(a)           //从这里能够看出来，这里传递过去的是一个值的拷贝，在A函数里面对这个struct的修改并不会影响到a    
+    fmt.Println(a) //如果加&amp;符号，则是引用传递，修改就会改变原有的值    
+    b := struct {  //匿名结构体        
+            Name string        
+            Age  int    
+            }{ //在声明struct的同时，可以声明值        
+            Name: &quot;pp&quot;,        
+            Age:  11, //这里结尾必须要加上逗号    
+            }    
+    fmt.Println(b)    
+    c := user{Name: &quot;pys&quot;, Age: 14} //第一层可以这样给结构体内的字段赋值    
+    c.Info.Phone = &quot;iphone4s&quot;       //匿名结构体只能用这种方式给赋值    
+    c.Info.City = &quot;shanghai&quot;    
+    fmt.Println(c)    
+    d := test{&quot;test&quot;, 4} //匿名字段结构体直接按照声明字段顺序赋值    
+    var e test    
+    e = d //同个struct可以直接赋值,非同个struct不可以进行比较    
+    fmt.Println(d == e)    //golang之中没有面向对象,但是可以通过一些特性实现一些面向对象的特性例如继承，在go里面叫包含    
+    //上面声明了三个结构，human,studen,teacher,按面向对象来做的话，他们都需要继承human，因为    //human里的属性包含了一个人最基本的属性，但是学生和老师又不一样    
+    t1 := teacher{Subject: &quot;语文&quot;, human: human{Sex: &quot;男&quot;}} //对于有组合的结构体来说    
+    //这个human只是一个字段,后一个human才代表human这个结构体,所以可以这样赋值    
+    t1.Age = 15 //因为是组合过来的，所以也可以这样赋值    
+    fmt.Println(t1)
+}
+func A(per person) {    
+    per.Age = 19    
+    fmt.Println(per)
+    }
+</code></pre>
+
       
     </div>
     

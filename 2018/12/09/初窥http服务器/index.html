@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="12345678910111213141516171819202122232425262728type myHandler struct&amp;#123;&amp;#125;func main() &amp;#123;        http.HandleFunc(&quot;/&quot;, Hello)             //没有指定路由则匹配到根路由        http.HandleFunc(&quot;/bye&quot;, Saybye">
+<meta name="description" content="type myHandler struct{} func main() {         http.HandleFunc(&amp;quot;/&amp;quot;, Hello)             //没有指定路由则匹配到根路由         http.HandleFunc(&amp;quot;/bye&amp;quot;, Saybye)         //不能带括号         mymux := http">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初窥http服务器">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/初窥http服务器/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728type myHandler struct&amp;#123;&amp;#125;func main() &amp;#123;        http.HandleFunc(&quot;/&quot;, Hello)             //没有指定路由则匹配到根路由        http.HandleFunc(&quot;/bye&quot;, Saybye">
+<meta property="og:description" content="type myHandler struct{} func main() {         http.HandleFunc(&amp;quot;/&amp;quot;, Hello)             //没有指定路由则匹配到根路由         http.HandleFunc(&amp;quot;/bye&amp;quot;, Saybye)         //不能带括号         mymux := http">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-09932281150a6ad8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:30:04.902Z">
+<meta property="og:updated_time" content="2018-12-09T14:58:38.208Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初窥http服务器">
-<meta name="twitter:description" content="12345678910111213141516171819202122232425262728type myHandler struct&amp;#123;&amp;#125;func main() &amp;#123;        http.HandleFunc(&quot;/&quot;, Hello)             //没有指定路由则匹配到根路由        http.HandleFunc(&quot;/bye&quot;, Saybye">
+<meta name="twitter:description" content="type myHandler struct{} func main() {         http.HandleFunc(&amp;quot;/&amp;quot;, Hello)             //没有指定路由则匹配到根路由         http.HandleFunc(&amp;quot;/bye&amp;quot;, Saybye)         //不能带括号         mymux := http">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-09932281150a6ad8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,35 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-09932281150a6ad8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">type myHandler struct&#123;&#125;</span><br><span class="line">func main() &#123;    </span><br><span class="line">    http.HandleFunc(<span class="string">"/"</span>, Hello)             <span class="comment">//没有指定路由则匹配到根路由    </span></span><br><span class="line">    http.HandleFunc(<span class="string">"/bye"</span>, Saybye)         <span class="comment">//不能带括号    </span></span><br><span class="line">    mymux := http.NewServeMux()             <span class="comment">//创建一个handlefunc的底层结构    </span></span><br><span class="line">    mymux.Handle(<span class="string">"/myhandle"</span>, &amp;myHandler&#123;&#125;) <span class="comment">//有handle和handlefunc，http.handlefunc底层就是servermux.handlefunc    </span></span><br><span class="line">    <span class="comment">//传入一个handle    </span></span><br><span class="line">    log.Println(<span class="string">"服务开始运行"</span>)    </span><br><span class="line">    <span class="comment">//创建自己的服务,listenandserve的底层也是多封装了一层    </span></span><br><span class="line">    myserve := &amp;http.Server&#123;        </span><br><span class="line">                    Addr: <span class="string">":4000"</span>,    </span><br><span class="line">                    &#125;    </span><br><span class="line">    myserve.Handler = mymux    </span><br><span class="line">    <span class="comment">//log.Fatal(myserve.ListenAndServe())    </span></span><br><span class="line">    log.Fatal(http.ListenAndServe(<span class="string">":4001"</span>, nil))    </span><br><span class="line">    <span class="comment">//第二个参数也是handle，如果不传则myhandle路由不生效,传了则根路由和bye路由不生效    </span></span><br><span class="line">    <span class="comment">//将根路由和bye路由绑定的http换成mymux则全部生效</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (*myHandler) ServeHTTP(w http.ResponseWriter, s *http.Request) &#123; <span class="comment">//为Myhandle绑定一个方法    </span></span><br><span class="line">    w.Write([]byte(<span class="string">"这是调用底层创建http服务的第二种方法 url:"</span> + s.URL.String()))</span><br><span class="line">    &#125;</span><br><span class="line">func Hello(w http.ResponseWriter, s *http.Request) &#123;    </span><br><span class="line">    w.Write([]byte(<span class="string">"你好，golang,第一种路由写法 Hello url:"</span> + s.URL.String()))</span><br><span class="line">    &#125;</span><br><span class="line">func Saybye(w http.ResponseWriter, s *http.Request) &#123;    </span><br><span class="line">    w.Write([]byte(<span class="string">"第一种路由写法 Saybye url:"</span> + s.URL.String()))</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-PHP">type myHandler struct{}
+func main() {    
+    http.HandleFunc(&quot;/&quot;, Hello)             //没有指定路由则匹配到根路由    
+    http.HandleFunc(&quot;/bye&quot;, Saybye)         //不能带括号    
+    mymux := http.NewServeMux()             //创建一个handlefunc的底层结构    
+    mymux.Handle(&quot;/myhandle&quot;, &amp;myHandler{}) //有handle和handlefunc，http.handlefunc底层就是servermux.handlefunc    
+    //传入一个handle    
+    log.Println(&quot;服务开始运行&quot;)    
+    //创建自己的服务,listenandserve的底层也是多封装了一层    
+    myserve := &amp;http.Server{        
+                    Addr: &quot;:4000&quot;,    
+                    }    
+    myserve.Handler = mymux    
+    //log.Fatal(myserve.ListenAndServe())    
+    log.Fatal(http.ListenAndServe(&quot;:4001&quot;, nil))    
+    //第二个参数也是handle，如果不传则myhandle路由不生效,传了则根路由和bye路由不生效    
+    //将根路由和bye路由绑定的http换成mymux则全部生效
+}
+
+func (*myHandler) ServeHTTP(w http.ResponseWriter, s *http.Request) { //为Myhandle绑定一个方法    
+    w.Write([]byte(&quot;这是调用底层创建http服务的第二种方法 url:&quot; + s.URL.String()))
+    }
+func Hello(w http.ResponseWriter, s *http.Request) {    
+    w.Write([]byte(&quot;你好，golang,第一种路由写法 Hello url:&quot; + s.URL.String()))
+    }
+func Saybye(w http.ResponseWriter, s *http.Request) {    
+    w.Write([]byte(&quot;第一种路由写法 Saybye url:&quot; + s.URL.String()))
+    }
+</code></pre>
 
       
     </div>

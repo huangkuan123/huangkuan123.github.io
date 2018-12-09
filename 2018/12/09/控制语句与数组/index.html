@@ -87,7 +87,7 @@
 <meta property="og:description" content="¶if判断 基本控制语句有if,for,switch。 if系列语句和php的一些区别，if条件判断语句不能写小括号，并且在条件判断前可以有初始化操作语句,只能有一个初始化语句,if下的执行语句由花括号包起来，左花括号必须与if同行。 如下: 1234if a, b := 3, 4; a == 3 &amp;#123;    fmt.Println(a)    fmt.Println(b)&amp;#125;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-67d4e212665ba23d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T12:18:31.687Z">
+<meta property="og:updated_time" content="2018-12-09T14:59:00.719Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="控制语句与数组">
 <meta name="twitter:description" content="¶if判断 基本控制语句有if,for,switch。 if系列语句和php的一些区别，if条件判断语句不能写小括号，并且在条件判断前可以有初始化操作语句,只能有一个初始化语句,if下的执行语句由花括号包起来，左花括号必须与if同行。 如下: 1234if a, b := 3, 4; a == 3 &amp;#123;    fmt.Println(a)    fmt.Println(b)&amp;#125;">
@@ -380,7 +380,19 @@ if系列语句和php的一些区别，if条件判断语句不能写小括号，�
 switch也可以写一个初始化语句。</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> a := <span class="number">2</span>; &#123;</span><br><span class="line"><span class="keyword">case</span> a == <span class="number">2</span>:</span><br><span class="line">    fmt.Println(<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="数组"><a class="header-anchor" href="#数组">¶</a><strong>数组</strong></h2>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;    </span><br><span class="line">    x, y := <span class="number">1</span>, <span class="number">2</span>    </span><br><span class="line">    a := [<span class="number">2</span>]*<span class="keyword">int</span>&#123;&amp;x, &amp;y&#125; <span class="comment">//保存的是指针,&amp;取址    </span></span><br><span class="line">    c := [...]<span class="keyword">int</span>&#123;<span class="number">1</span>: <span class="number">0</span>&#125;  <span class="comment">//...可以代替未知单元个数，会自动算出个数    </span></span><br><span class="line">    <span class="keyword">var</span> d *[<span class="number">2</span>]<span class="keyword">int</span> = &amp;c   <span class="comment">//保存的是数组实际的值，指向数组的指针，用关键字new出来的也是指向数组的指针    </span></span><br><span class="line">    <span class="keyword">var</span> b = <span class="built_in">new</span>([<span class="number">2</span>]<span class="keyword">int</span>)    </span><br><span class="line">    fmt.Println(a)    </span><br><span class="line">    fmt.Println(*a[<span class="number">1</span>]) <span class="comment">//*号取值    </span></span><br><span class="line">    fmt.Println(b)    </span><br><span class="line">    fmt.Println(d)    </span><br><span class="line">    <span class="keyword">var</span> s [<span class="number">2</span>][<span class="number">3</span>][<span class="number">3</span>]<span class="keyword">int</span>    </span><br><span class="line">    fmt.Println(s)&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-golang">func main() {    
+    x, y := 1, 2    
+    a := [2]*int{&amp;x, &amp;y} //保存的是指针,&amp;取址    
+    c := [...]int{1: 0}  //...可以代替未知单元个数，会自动算出个数    
+    var d *[2]int = &amp;c   //保存的是数组实际的值，指向数组的指针，用关键字new出来的也是指向数组的指针    
+    var b = new([2]int)    
+    fmt.Println(a)    
+    fmt.Println(*a[1]) //*号取值    
+    fmt.Println(b)    
+    fmt.Println(d)    
+    var s [2][3][3]int    
+    fmt.Println(s)}
+</code></pre>
 <ol>
 <li>声明 var a [单元个数]类型,声明并赋值 a:=[单元格数]类型{索引:值},使用var就只能声明不能赋值，使用:=方式就必须得赋值,哪怕是放个空的花括号。</li>
 <li>数组可以进行等于或不等于的比较，数组的长度是作为一种类型存在的，不同类型的数组不能进行比较</li>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1234567891011121314151617181920212223242526272829func main() &amp;#123;        fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序        runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go">
+<meta name="description" content="func main() {         fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序         runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go时非阻塞时，执行顺序是随机的         //不均匀，为了防止某些步骤未执行完毕main函数就退出需">
 <meta property="og:type" content="article">
 <meta property="og:title" content="并发concurrency">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/并发concurrency/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="1234567891011121314151617181920212223242526272829func main() &amp;#123;        fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序        runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go">
+<meta property="og:description" content="func main() {         fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序         runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go时非阻塞时，执行顺序是随机的         //不均匀，为了防止某些步骤未执行完毕main函数就退出需">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-e45e2890174f4e36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:26:24.908Z">
+<meta property="og:updated_time" content="2018-12-09T15:00:12.316Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发concurrency">
-<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829func main() &amp;#123;        fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序        runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go">
+<meta name="twitter:description" content="func main() {         fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序         runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go时非阻塞时，执行顺序是随机的         //不均匀，为了防止某些步骤未执行完毕main函数就退出需">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-e45e2890174f4e36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,36 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-e45e2890174f4e36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;    </span><br><span class="line">    fmt.Println(runtime.NumCPU())        <span class="comment">//这里可以看到我的cpu核数，利用多核运行程序    </span></span><br><span class="line">    runtime.GOMAXPROCS(runtime.NumCPU()) <span class="comment">//利用多核进行运行程序，当使用go时非阻塞时，执行顺序是随机的    </span></span><br><span class="line">    <span class="comment">//不均匀，为了防止某些步骤未执行完毕main函数就退出需要配合另外一个包sync或者通过缓存通道    </span></span><br><span class="line">    <span class="comment">//例如程序需要执行十次，那么每次存入一个值，外部用取到十次值才退出    </span></span><br><span class="line">    s := sync.WaitGroup&#123;&#125;    </span><br><span class="line">    s.Add(<span class="number">10</span>) <span class="comment">//增加十个任务    </span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i += <span class="number">1</span> &#123;        </span><br><span class="line">        ww(&amp;s, i)    </span><br><span class="line">        &#125;    </span><br><span class="line">    s.Wait()             <span class="comment">//等待十次任务清除才会继续下面的动作    </span></span><br><span class="line">    c := make(chan bool) <span class="comment">//这是双向通道，还有一种是单项通道只可以取或存    </span></span><br><span class="line">    go Test(c)           <span class="comment">//goroutine关键字，由官方实现的一个超级线程池    </span></span><br><span class="line">    <span class="comment">//通过通信(通道)来实现共享内存channel。这里又讲到时间切片的概念，在多进程中也讲到过    </span></span><br><span class="line">    fmt.Println(<span class="number">1</span>) <span class="comment">//这里并非按照顺序执行，有可能Test函数先执行,如果将通道放置上一行，则是阻塞的操作    </span></span><br><span class="line">    &lt;-c            <span class="comment">//遇到这一行则会等待Test返回才会执行下一句    </span></span><br><span class="line">    <span class="comment">//可以通过for range迭代这个通道，就会一直等待通道存入值信号，要用close关闭这个通道    </span></span><br><span class="line">    <span class="comment">//通道缓存概念:make(chan bool 1)创建一个容量为1的通道,有缓存为异步的,无缓存是阻塞的    </span></span><br><span class="line">    <span class="comment">//可以简单的理解为通道已经有个东西了,只要读就能读到东西,无缓存理解为通道没有东西，没有读到就会一直等待    </span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">&#125;</span><br><span class="line">func Test(c chan bool) &#123; <span class="comment">//这里传递一个通道参数需要三个    </span></span><br><span class="line">    fmt.Println(<span class="string">"go go go !!!"</span>)    </span><br><span class="line">    c &lt;- <span class="keyword">true</span></span><br><span class="line">    &#125;</span><br><span class="line">func ww(s *sync.WaitGroup, i int) &#123;    </span><br><span class="line">    fmt.Println(i)    </span><br><span class="line">    s.Done() <span class="comment">//清除一次</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-PHP">func main() {    
+    fmt.Println(runtime.NumCPU())        //这里可以看到我的cpu核数，利用多核运行程序    
+    runtime.GOMAXPROCS(runtime.NumCPU()) //利用多核进行运行程序，当使用go时非阻塞时，执行顺序是随机的    
+    //不均匀，为了防止某些步骤未执行完毕main函数就退出需要配合另外一个包sync或者通过缓存通道    
+    //例如程序需要执行十次，那么每次存入一个值，外部用取到十次值才退出    
+    s := sync.WaitGroup{}    
+    s.Add(10) //增加十个任务    
+    for i := 0; i &lt; 10; i += 1 {        
+        ww(&amp;s, i)    
+        }    
+    s.Wait()             //等待十次任务清除才会继续下面的动作    
+    c := make(chan bool) //这是双向通道，还有一种是单项通道只可以取或存    
+    go Test(c)           //goroutine关键字，由官方实现的一个超级线程池    
+    //通过通信(通道)来实现共享内存channel。这里又讲到时间切片的概念，在多进程中也讲到过    
+    fmt.Println(1) //这里并非按照顺序执行，有可能Test函数先执行,如果将通道放置上一行，则是阻塞的操作    
+    &lt;-c            //遇到这一行则会等待Test返回才会执行下一句    
+    //可以通过for range迭代这个通道，就会一直等待通道存入值信号，要用close关闭这个通道    
+    //通道缓存概念:make(chan bool 1)创建一个容量为1的通道,有缓存为异步的,无缓存是阻塞的    
+    //可以简单的理解为通道已经有个东西了,只要读就能读到东西,无缓存理解为通道没有东西，没有读到就会一直等待    
+    //
+}
+func Test(c chan bool) { //这里传递一个通道参数需要三个    
+    fmt.Println(&quot;go go go !!!&quot;)    
+    c &lt;- true
+    }
+func ww(s *sync.WaitGroup, i int) {    
+    fmt.Println(i)    
+    s.Done() //清除一次
+    }
+</code></pre>
 
       
     </div>

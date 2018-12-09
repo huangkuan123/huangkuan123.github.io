@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="12345678910111213141516171819202122type A struct &amp;#123;        Name string    &amp;#125;type B struct &amp;#123;        Name string    &amp;#125;func main() &amp;#123;        a := A&amp;#123;&amp;#125;        a.Echo()">
+<meta name="description" content="type A struct {         Name string     } type B struct {         Name string     } func main() {         a := A{}         a.Echo()         b := B{}         b.Echo()    //通过B这个类型的变量b来调用Echo方法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="方法method">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/方法method/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="12345678910111213141516171819202122type A struct &amp;#123;        Name string    &amp;#125;type B struct &amp;#123;        Name string    &amp;#125;func main() &amp;#123;        a := A&amp;#123;&amp;#125;        a.Echo()">
+<meta property="og:description" content="type A struct {         Name string     } type B struct {         Name string     } func main() {         a := A{}         a.Echo()         b := B{}         b.Echo()    //通过B这个类型的变量b来调用Echo方法">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-8626ace91096f6d1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:10:15.942Z">
+<meta property="og:updated_time" content="2018-12-09T15:00:48.314Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="方法method">
-<meta name="twitter:description" content="12345678910111213141516171819202122type A struct &amp;#123;        Name string    &amp;#125;type B struct &amp;#123;        Name string    &amp;#125;func main() &amp;#123;        a := A&amp;#123;&amp;#125;        a.Echo()">
+<meta name="twitter:description" content="type A struct {         Name string     } type B struct {         Name string     } func main() {         a := A{}         a.Echo()         b := B{}         b.Echo()    //通过B这个类型的变量b来调用Echo方法">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-8626ace91096f6d1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,8 +354,41 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-8626ace91096f6d1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">type A struct &#123;    </span><br><span class="line">    Name string</span><br><span class="line">    &#125;</span><br><span class="line">type B struct &#123;    </span><br><span class="line">    Name string</span><br><span class="line">    &#125;</span><br><span class="line">func main() &#123;    </span><br><span class="line">    a := A&#123;&#125;    </span><br><span class="line">    a.<span class="keyword">Echo</span>()    </span><br><span class="line">    b := B&#123;&#125;    </span><br><span class="line">    b.<span class="keyword">Echo</span>()    <span class="comment">//通过B这个类型的变量b来调用Echo方法    </span></span><br><span class="line">    (B).<span class="keyword">Echo</span>(b) <span class="comment">//通过B类型来调用Echo，传入一个B类型的参数</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//方法method</span></span><br><span class="line">    func (a A) <span class="keyword">Echo</span>() &#123;    </span><br><span class="line">    <span class="comment">//这样就可以让这个方法与这个结构体绑定，在一定程度上就相当于对象调用自身的方法了    </span></span><br><span class="line">    <span class="comment">//方法绑定可以基于任何类型比如int    </span></span><br><span class="line">        fmt.Println(<span class="string">"A"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    func (b B) <span class="keyword">Echo</span>() &#123;</span><br><span class="line">        fmt.Println(<span class="string">"B"</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    <span class="keyword">var</span> a TT</span><br><span class="line">    a.adds(<span class="number">100</span>)</span><br><span class="line">    fmt.Println(a)</span><br><span class="line">   &#125;</span><br><span class="line">   func (a *TT) adds(num int) &#123; </span><br><span class="line">    <span class="comment">//为TT类型绑定一个method</span></span><br><span class="line">    *a += TT(num) <span class="comment">//这里虽然也是int,但是还是不一样，至于为什么不一样以后再做研究</span></span><br><span class="line">    <span class="comment">//不转成TT类型会报错</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-PHP">type A struct {    
+    Name string
+    }
+type B struct {    
+    Name string
+    }
+func main() {    
+    a := A{}    
+    a.Echo()    
+    b := B{}    
+    b.Echo()    //通过B这个类型的变量b来调用Echo方法    
+    (B).Echo(b) //通过B类型来调用Echo，传入一个B类型的参数
+    }
+    //方法method
+    func (a A) Echo() {    
+    //这样就可以让这个方法与这个结构体绑定，在一定程度上就相当于对象调用自身的方法了    
+    //方法绑定可以基于任何类型比如int    
+        fmt.Println(&quot;A&quot;)
+    }
+    func (b B) Echo() {
+        fmt.Println(&quot;B&quot;)
+    }
+</code></pre>
+<pre><code class="language-PHP">func main() {
+    var a TT
+    a.adds(100)
+    fmt.Println(a)
+   }
+   func (a *TT) adds(num int) { 
+    //为TT类型绑定一个method
+    *a += TT(num) //这里虽然也是int,但是还是不一样，至于为什么不一样以后再做研究
+    //不转成TT类型会报错
+    }
+</code></pre>
+
       
     </div>
     

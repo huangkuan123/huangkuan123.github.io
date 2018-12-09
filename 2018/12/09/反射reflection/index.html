@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465type User struct &amp;#123;        Name string        Age  int        Id   int">
+<meta name="description" content="type User struct {         Name string         Age  int         Id   int     } func (u User) GetName(name string) { //将匿名方法绑定到结构体中         fmt.Println(&amp;quot;我的名字叫&amp;quot;, u.Name, &amp;quot;传进来的是&amp;quot;, na">
 <meta property="og:type" content="article">
 <meta property="og:title" content="反射reflection">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/反射reflection/index.html">
 <meta property="og:site_name" content="哔,韭菜园到了">
-<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465type User struct &amp;#123;        Name string        Age  int        Id   int">
+<meta property="og:description" content="type User struct {         Name string         Age  int         Id   int     } func (u User) GetName(name string) { //将匿名方法绑定到结构体中         fmt.Println(&amp;quot;我的名字叫&amp;quot;, u.Name, &amp;quot;传进来的是&amp;quot;, na">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-9878053cd2ac145d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-12-09T14:32:01.109Z">
+<meta property="og:updated_time" content="2018-12-09T15:00:12.319Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="反射reflection">
-<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465type User struct &amp;#123;        Name string        Age  int        Id   int">
+<meta name="twitter:description" content="type User struct {         Name string         Age  int         Id   int     } func (u User) GetName(name string) { //将匿名方法绑定到结构体中         fmt.Println(&amp;quot;我的名字叫&amp;quot;, u.Name, &amp;quot;传进来的是&amp;quot;, na">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-9878053cd2ac145d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -354,7 +354,72 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/7027304-9878053cd2ac145d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;    </span><br><span class="line">    Name <span class="keyword">string</span>    </span><br><span class="line">    Age  <span class="keyword">int</span>    </span><br><span class="line">    Id   <span class="keyword">int</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u User)</span> <span class="title">GetName</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123; <span class="comment">//将匿名方法绑定到结构体中    </span></span><br><span class="line">    fmt.Println(<span class="string">"我的名字叫"</span>, u.Name, <span class="string">"传进来的是"</span>, name)</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;    </span><br><span class="line">    a := User&#123;<span class="string">"xiaoming"</span>, <span class="number">5</span>, <span class="number">6</span>&#125;    </span><br><span class="line">    a.GetName(<span class="string">"测试1"</span>)    </span><br><span class="line">    Setname(&amp;a)    </span><br><span class="line">    a.GetName(<span class="string">"测试2"</span>)    </span><br><span class="line">    fmt.Println(a.Name)    </span><br><span class="line">    info(a)    </span><br><span class="line">    ra := reflect.ValueOf(a)    </span><br><span class="line">    rm := ra.MethodByName(<span class="string">"GetName"</span>)    </span><br><span class="line">    args := []reflect.Value&#123;reflect.ValueOf(<span class="string">"测试三"</span>)&#125; <span class="comment">//通过反射调用该对象方法    </span></span><br><span class="line">    <span class="comment">//这里再次回到切片与数组。到底什么是切片，什么是数组    </span></span><br><span class="line">    <span class="comment">//再次总结一下，刚看了点资料,以下是链接    </span></span><br><span class="line">    &lt;https:<span class="comment">//www.zhihu.com/question/66673454&gt;    </span></span><br><span class="line">    <span class="comment">//以下是总结    </span></span><br><span class="line">    <span class="comment">//1.数组要指明长度Array := [ArrayLength] ElementType，arr :=[4]int,数组拷贝为值拷贝    </span></span><br><span class="line">    <span class="comment">//2.切片不需要指明长度SliceT := []ElementType,但是他有容量机制，拷贝为指针拷贝    </span></span><br><span class="line">    arr := [<span class="number">4</span>]<span class="keyword">int</span>&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>&#125;    </span><br><span class="line">    arrs := arr[<span class="number">1</span>:<span class="number">2</span>]    </span><br><span class="line">    ccc := reflect.TypeOf(arrs).Kind() <span class="comment">//通过反射判断是一个数组还是切片    </span></span><br><span class="line">    fmt.Println(ccc)    </span><br><span class="line">    rm.Call(args)&#125;<span class="function"><span class="keyword">func</span> <span class="title">info</span><span class="params">(o <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123; <span class="comment">//获取这个实例化了的结构体的所有信息    </span></span><br><span class="line">        ot := reflect.TypeOf(o)  <span class="comment">//通过反射获取类型    </span></span><br><span class="line">        ov := reflect.ValueOf(o) <span class="comment">//获取值    </span></span><br><span class="line">        fmt.Println(ot, <span class="string">"\n"</span>)    </span><br><span class="line">        fmt.Println(ov, <span class="string">"\n"</span>)    </span><br><span class="line">        fmt.Println(ot.Name(), <span class="string">"\n"</span>)<span class="comment">//打印这个实现了空接口的结构名称    </span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ot.NumField(); i += <span class="number">1</span> &#123; <span class="comment">//获取这个结构体内的值        </span></span><br><span class="line">        n := ot.Field(i)        </span><br><span class="line">        val := ov.Field(i)        </span><br><span class="line">        fmt.Println(n.Type, <span class="string">":"</span>, n.Name, <span class="string">","</span>, val)   </span><br><span class="line">         &#125;</span><br><span class="line">     <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ot.NumMethod(); i += <span class="number">1</span> &#123; <span class="comment">//打印这个结构体的每个方法        </span></span><br><span class="line">        f := ot.Method(i)        </span><br><span class="line">        fmt.Printf(<span class="string">"%s:%v,%v\n"</span>, f.Name, f.Type, f.Index)    </span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Setname</span><span class="params">(o <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123; <span class="comment">//通过反射设置值    </span></span><br><span class="line">    v := reflect.ValueOf(o)    </span><br><span class="line">    fmt.Println(v.Elem())          <span class="comment">//这里打印出来是这个结构体    </span></span><br><span class="line">    fmt.Println(v.Elem().CanSet()) <span class="comment">//这里返回的是个布尔    </span></span><br><span class="line">    fmt.Println(v.Kind())          <span class="comment">//这里打印出来的就是ptr    </span></span><br><span class="line">    fmt.Println(reflect.Ptr)       <span class="comment">//也是ptr,引出个问题，为什么不用字符串"ptr"?以后再找答案,指针    </span></span><br><span class="line">    fmt.Println(v)    <span class="comment">//Elem返回v持有的接口保管的值的Value封装，    </span></span><br><span class="line">    <span class="comment">//或者v持有的指针指向的值的Value封装。如果v的Kind不是Interface或Ptr会panic；如果v持有的值为nil，会返回Value零值。    </span></span><br><span class="line">    <span class="comment">//Kind返回v持有的值的分类，如果v是Value零值，返回值为Invalid    </span></span><br><span class="line">    <span class="keyword">if</span> v.Kind() == reflect.Ptr &amp;&amp; !v.Elem().CanSet() &#123; <span class="comment">//如果是指针且不能被修改        </span></span><br><span class="line">        fmt.Println(<span class="string">"xxx"</span>) <span class="comment">//这个判断有问题,如果不是指针也会走else,或者可以修改但不是指针也会走else        </span></span><br><span class="line">        <span class="keyword">return</span>    </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;        </span><br><span class="line">        v = v.Elem()    </span><br><span class="line">        &#125;    </span><br><span class="line">    n := v.FieldByName(<span class="string">"Name"</span>)    </span><br><span class="line">    <span class="keyword">if</span> n.IsValid() &amp;&amp; n.Kind() == reflect.String &#123; <span class="comment">//如果取到了值并且类型是字符串则修改        </span></span><br><span class="line">        fmt.Println(n, <span class="string">"\n"</span>, n.Kind())        </span><br><span class="line">        n.SetString(<span class="string">"lele"</span>) <span class="comment">//修改名字//通过反射对值进行修改，肯定可以修改拉，传进来的是指针    </span></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="language-golang">type User struct {    
+    Name string    
+    Age  int    
+    Id   int
+    }
+func (u User) GetName(name string) { //将匿名方法绑定到结构体中    
+    fmt.Println(&quot;我的名字叫&quot;, u.Name, &quot;传进来的是&quot;, name)
+    }
+func main() {    
+    a := User{&quot;xiaoming&quot;, 5, 6}    
+    a.GetName(&quot;测试1&quot;)    
+    Setname(&amp;a)    
+    a.GetName(&quot;测试2&quot;)    
+    fmt.Println(a.Name)    
+    info(a)    
+    ra := reflect.ValueOf(a)    
+    rm := ra.MethodByName(&quot;GetName&quot;)    
+    args := []reflect.Value{reflect.ValueOf(&quot;测试三&quot;)} //通过反射调用该对象方法    
+    //这里再次回到切片与数组。到底什么是切片，什么是数组    
+    //再次总结一下，刚看了点资料,以下是链接    
+    &lt;https://www.zhihu.com/question/66673454&gt;    
+    //以下是总结    
+    //1.数组要指明长度Array := [ArrayLength] ElementType，arr :=[4]int,数组拷贝为值拷贝    
+    //2.切片不需要指明长度SliceT := []ElementType,但是他有容量机制，拷贝为指针拷贝    
+    arr := [4]int{0, 1, 3, 4}    
+    arrs := arr[1:2]    
+    ccc := reflect.TypeOf(arrs).Kind() //通过反射判断是一个数组还是切片    
+    fmt.Println(ccc)    
+    rm.Call(args)}func info(o interface{}) { //获取这个实例化了的结构体的所有信息    
+        ot := reflect.TypeOf(o)  //通过反射获取类型    
+        ov := reflect.ValueOf(o) //获取值    
+        fmt.Println(ot, &quot;\n&quot;)    
+        fmt.Println(ov, &quot;\n&quot;)    
+        fmt.Println(ot.Name(), &quot;\n&quot;)//打印这个实现了空接口的结构名称    
+        for i := 0; i &lt; ot.NumField(); i += 1 { //获取这个结构体内的值        
+        n := ot.Field(i)        
+        val := ov.Field(i)        
+        fmt.Println(n.Type, &quot;:&quot;, n.Name, &quot;,&quot;, val)   
+         }
+     for i := 0; i &lt; ot.NumMethod(); i += 1 { //打印这个结构体的每个方法        
+        f := ot.Method(i)        
+        fmt.Printf(&quot;%s:%v,%v\n&quot;, f.Name, f.Type, f.Index)    
+        }
+}
+func Setname(o interface{}) { //通过反射设置值    
+    v := reflect.ValueOf(o)    
+    fmt.Println(v.Elem())          //这里打印出来是这个结构体    
+    fmt.Println(v.Elem().CanSet()) //这里返回的是个布尔    
+    fmt.Println(v.Kind())          //这里打印出来的就是ptr    
+    fmt.Println(reflect.Ptr)       //也是ptr,引出个问题，为什么不用字符串&quot;ptr&quot;?以后再找答案,指针    
+    fmt.Println(v)    //Elem返回v持有的接口保管的值的Value封装，    
+    //或者v持有的指针指向的值的Value封装。如果v的Kind不是Interface或Ptr会panic；如果v持有的值为nil，会返回Value零值。    
+    //Kind返回v持有的值的分类，如果v是Value零值，返回值为Invalid    
+    if v.Kind() == reflect.Ptr &amp;&amp; !v.Elem().CanSet() { //如果是指针且不能被修改        
+        fmt.Println(&quot;xxx&quot;) //这个判断有问题,如果不是指针也会走else,或者可以修改但不是指针也会走else        
+        return    
+        } else {        
+        v = v.Elem()    
+        }    
+    n := v.FieldByName(&quot;Name&quot;)    
+    if n.IsValid() &amp;&amp; n.Kind() == reflect.String { //如果取到了值并且类型是字符串则修改        
+        fmt.Println(n, &quot;\n&quot;, n.Kind())        
+        n.SetString(&quot;lele&quot;) //修改名字//通过反射对值进行修改，肯定可以修改拉，传进来的是指针    
+        }
+}
+</code></pre>
 
       
     </div>
