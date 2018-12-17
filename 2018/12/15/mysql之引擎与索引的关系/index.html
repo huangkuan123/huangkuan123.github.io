@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="¶两种常用引擎 MyISAM与InnoDB是两种最常见的Mysql引擎。 而他们之所以不同的大部分原因还是在索引和锁机制，因为他们的这两点不同，会导致很多性能上的不同，甚至表结构都会根据这两种引擎的特性来做相应的改变。 ¶题外话 在谈及索引之前，有点题外话，也是必要的，为了下面的内容做铺垫。 那就是Mysql的三层结构。 第一层为客户端，当你安装的时候，默认会带一个Mysql控制台版的客户端。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql之引擎与索引的关系">
+<meta property="og:url" content="http://yoursite.com/2018/12/15/mysql之引擎与索引的关系/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="¶两种常用引擎 MyISAM与InnoDB是两种最常见的Mysql引擎。 而他们之所以不同的大部分原因还是在索引和锁机制，因为他们的这两点不同，会导致很多性能上的不同，甚至表结构都会根据这两种引擎的特性来做相应的改变。 ¶题外话 在谈及索引之前，有点题外话，也是必要的，为了下面的内容做铺垫。 那就是Mysql的三层结构。 第一层为客户端，当你安装的时候，默认会带一个Mysql控制台版的客户端。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-820194a02007ffed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2018-12-16T06:59:35.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql之引擎与索引的关系">
+<meta name="twitter:description" content="¶两种常用引擎 MyISAM与InnoDB是两种最常见的Mysql引擎。 而他们之所以不同的大部分原因还是在索引和锁机制，因为他们的这两点不同，会导致很多性能上的不同，甚至表结构都会根据这两种引擎的特性来做相应的改变。 ¶题外话 在谈及索引之前，有点题外话，也是必要的，为了下面的内容做铺垫。 那就是Mysql的三层结构。 第一层为客户端，当你安装的时候，默认会带一个Mysql控制台版的客户端。">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-820194a02007ffed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/15/mysql之引擎与索引的关系/">
+
+
+
+
+
+  <title>mysql之引擎与索引的关系 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/15/mysql之引擎与索引的关系/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mysql之引擎与索引的关系</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T11:07:24+08:00">
+                2018-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-820194a02007ffed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+<h2 id="两种常用引擎"><a class="header-anchor" href="#两种常用引擎">¶</a><strong>两种常用引擎</strong></h2>
+<p><code>MyISAM</code>与<code>InnoDB</code>是两种最常见的<code>Mysql</code>引擎。<br><br>
+而他们之所以不同的大部分原因还是在索引和锁机制，因为他们的这两点不同，会导致很多性能上的不同，甚至表结构都会根据这两种引擎的特性来做相应的改变。<br></p>
+<h2 id="题外话"><a class="header-anchor" href="#题外话">¶</a><strong>题外话</strong></h2>
+<p>在谈及索引之前，有点题外话，也是必要的，为了下面的内容做铺垫。<br><br>
+那就是<code>Mysql</code>的三层结构。<br><br>
+第一层为客户端，当你安装的时候，默认会带一个Mysql控制台版的客户端。<br><br>
+第二层为<code>DBMS</code>(<code>Database Management System</code>)，数据库管理系统，实际上我们是与这个中间层做交互，而不是数据本身(说到这里你能想到set names utf8是对哪些进行操作了吗？)，这玩意就像是车的发动机，是数据库的核心。<br><br>
+第三层为数据本身，根据数据库表的引擎不同，分别以各种形式存储在磁盘上，等待DBMS的调度。</p>
+<h2 id="myisam"><a class="header-anchor" href="#myisam">¶</a><strong>MyISAM</strong></h2>
+<p>在很久以前，创建表时，如果不指明<code>engine</code>,表的默认引擎就是<code>MyISAM</code>。现在的是<code>InnoDB</code>了。<br></p>
+<h3 id="数据存储形式"><a class="header-anchor" href="#数据存储形式">¶</a><em>数据存储形式</em></h3>
+<p>如何查看数据存在哪？打开客户端，键入以下命令:<br></p>
+<pre><code class="language-mysql">show variables where Variable_name ='datadir';
+</code></pre>
+<p>我的是<code>/usr/local/var/mysql</code>，打开后会发现很熟悉，那都是你的库名字。<br><br>
+选择一个拥有MyISAM引擎表的库(文件夹)，打开会发现有很多文件，找到那张MyISAM引擎的表名，你能找到三个不同后缀的文件。<br><br>
+分别是<code>.frm</code>,<code>.MYD</code>,<code>.MYI</code>。就是这三个文件组成了你的那张表，这三个不同的文件有着不同的作用，但都是描述同一张表的(可以看成是一本书)。<br><br>
+<code>.frm</code>,里面记录着表的信息，包含创建时间，表名等(书的封面，前言，介绍)。<br><br>
+<code>.MYD</code>,为这张表的所有数据内容如(书的内容)。<br><br>
+<code>.MYI</code>，这里记录着这张表的所有索引(书的目录)。<br></p>
+<p>从数据存储结构上来看，<code>MyISAM</code>引擎的索引，是属于聚簇索引。聚簇索引也决定在大多数情况下，通过索引查找数据，是需要回行的(后面说)。</p>
+<h3 id="索引结构与一般查找流程"><a class="header-anchor" href="#索引结构与一般查找流程">¶</a><em>索引结构与一般查找流程</em></h3>
+<p>它的索引是一种查找树B+Tree(更好区间查询能力，因为在子节点中还增加了相邻节点的顺序访问指针),当需要使用到索引时(假设为主键)，程序便会找到这个表的索引文件。<br><br>
+在这种树下查找数据非常快速，如果使用 <code>int</code> 类型作为主键，那么通过树查找(类似于二分查找)，最多只需要找 <em>32</em> 次。<br><br>
+当从索引中找到主键对应的节点后，该节点下的 <code>data</code> 域存储着数据地址(行指针)，找到数据地址后，直接去<code>MYD</code>文件拿到数据，这个过程叫<code>回行</code>。<br></p>
+<h2 id="innodb"><a class="header-anchor" href="#innodb">¶</a><strong>InnoDB</strong></h2>
+<p>该引擎下的索引称之为<code>聚簇索引</code>。如果没有表没有设置索引，那么系统会默认将主键建立索引，如果没有主键，会选择一个唯一索引作为建立索引树，如果还是没有的话，系统会自动生成rowid作为主键。<br><br>
+<code>该引擎在5.5后，支持全文索引。</code></p>
+<h3 id="数据存储形式-v2"><a class="header-anchor" href="#数据存储形式-v2">¶</a><em>数据存储形式</em></h3>
+<p>在以前，默认情况下，所有数据都会存放在共享表空间文件(每个表的.frm还是独立文件的)，现在默认的都是独享空间文件，文件后缀为.ibd。<br><br>
+相较于MyISAM引擎而言，少了一个.MYI文件，上文得知，这个是存储索引结构数据的文件，那innodb的索引存储在哪里了呢？这就是为什么innodb的索引为什么叫聚簇索引了。<br></p>
+<h3 id="索引结构与一般查找流程-v2"><a class="header-anchor" href="#索引结构与一般查找流程-v2">¶</a><em>索引结构与一般查找流程</em></h3>
+<p>他的索引结构也是一颗B+Tree树，只不过子节点不是存储着数据指针，而是数据本身。可以这么理解，索引和数据都在.ibd文件内。索引id对应的data域存储着数据本身。<br><br>
+打个简单的比方，有个瞎子找到了，一颗叫MyISAM的苹果树，要找27号苹果，当他找到27号树叶的时候，树叶告诉他，恭喜你找到了，但是你得去旁边地上的27号箱子里拿到27号苹果。<br><br>
+又有个瞎子找到了一个叫InnoDB的树，也要找27号苹果，当找到27号叶子后，叶子告诉他，苹果就在我身后。<br><br>
+这里可以知道，innodb不需要做回行操作。但是它没有缺点了吗？<br><br>
+如果主键没有规律呢？不是自增的呢？这样就会导致页分裂，可以想象，本来如果是自增的数据，插入会很快，挨着插入就行了，如果主键(肯定会有一个主键)不规律的话，那就会导致页分裂，页分裂将会严重影响到插入速度。<br><br>
+而当乱序插入后，直接select * from xxxx;查出来的数据可以看到是有序的(在有主键id的情况下)，这是为什么呢？<br><br>
+因为它是聚簇索引，数据和索引都在同一个文件，即使是乱序插入，对于索引树来说也是有序的，查询出来也是按照索引挨个取的，并花不了多少时间。<br><br>
+那为什么乱序插入MyISAM表后查出来也是乱序的呢？如果是select * from xxxx;的话，程序自然不会再去索引树上找了，直接去<code>MYD</code>文件上全部取出来就行了。<br><br>
+这里我们能从侧面看出聚簇索引和非聚簇索引的一个很重要的区别。</p>
+<h3 id="innodb的次级索引"><a class="header-anchor" href="#innodb的次级索引">¶</a><em>innodb的次级索引</em></h3>
+<p>通过上面的介绍，可以了解到，所有数据都跟索引树在一起。那么如果一个表，有两个索引呢?这个innodb是怎么处理的？<br><br>
+如果说重建一棵完整的树，那么势必会导致数据冗余，因为所有数据都挂载在树上，因此，次级索引的data域是不会保留主树上的内容的，而是保留的指向主树节点的指针。<br><br>
+因此，可以这么理解，主树是一颗大树，很沉重。次级索引是小树，作为辅助。因此，当数据量一大，我们需要考虑建立次级索引，从次级索引搜索甚至可以比主键索引更快。</p>
+<h2 id="hash索引"><a class="header-anchor" href="#hash索引">¶</a><strong>Hash索引</strong></h2>
+<p>通过Hash算法，将数据散列到某个位置，什么都不用记，有请求过来，根据规则再次对数据进行Hash处理，再次散到内存中即找到数据。<br><br>
+该索引速度是最快的，第一，没有磁盘io，第二直接在内存中计算位置。<br><br>
+缺点也是很明显的，该索引只存在内存当中，也就是说，关机后，就没了，需要重建索引。<br><br>
+第二个缺点，无法进行范围查询，因为Hash散列的数据是没有规律可言的，每个散列点都是独立的。<br>
+第三个缺点，无法利用前缀索引。<br>
+这个了解一下就好了。<br></p>
+<h2 id="最后"><a class="header-anchor" href="#最后">¶</a><strong>最后</strong></h2>
+<p>之所以先写这篇，主要是为了后面的索引的使用做铺垫，所有的mysql文章都是按顺序来写的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/14/mysql优化之入门部分/" rel="next" title="mysql优化之入门部分">
+                <i class="fa fa-chevron-left"></i> mysql优化之入门部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/15/mysql优化之索引使用/" rel="prev" title="mysql优化之索引使用">
+                mysql优化之索引使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#两种常用引擎"><span class="nav-number">1.</span> <span class="nav-text">¶两种常用引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题外话"><span class="nav-number">2.</span> <span class="nav-text">¶题外话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#myisam"><span class="nav-number">3.</span> <span class="nav-text">¶MyISAM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据存储形式"><span class="nav-number">3.1.</span> <span class="nav-text">¶数据存储形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引结构与一般查找流程"><span class="nav-number">3.2.</span> <span class="nav-text">¶索引结构与一般查找流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#innodb"><span class="nav-number">4.</span> <span class="nav-text">¶InnoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据存储形式-v2"><span class="nav-number">4.1.</span> <span class="nav-text">¶数据存储形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引结构与一般查找流程-v2"><span class="nav-number">4.2.</span> <span class="nav-text">¶索引结构与一般查找流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#innodb的次级索引"><span class="nav-number">4.3.</span> <span class="nav-text">¶innodb的次级索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash索引"><span class="nav-number">5.</span> <span class="nav-text">¶Hash索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">¶最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
