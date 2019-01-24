@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="该章节我准备和第五章一起记录，第五章节主要写的是Mysql各个引擎的特点和介绍。 之所以要写到一起，也还有另一个原因，那就是第五章介绍到了InnoDB引擎的时候带给了我一些疑惑。 还是先说这一章的多版本并发控制。 ¶多版本并发控制 多版本并发控制(MVCC)。Innodb的行锁，并不只是简单使用行锁机制，而是行锁配合多版本并发控制技术实现的行锁。 多版本并发控制并不是一个系统，而是一种类似于设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能 Mysql 第一章第四节 多版本并发控制">
+<meta property="og:url" content="http://yoursite.com/2019/01/24/高性能-Mysql-第一章第四节-多版本并发控制/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="该章节我准备和第五章一起记录，第五章节主要写的是Mysql各个引擎的特点和介绍。 之所以要写到一起，也还有另一个原因，那就是第五章介绍到了InnoDB引擎的时候带给了我一些疑惑。 还是先说这一章的多版本并发控制。 ¶多版本并发控制 多版本并发控制(MVCC)。Innodb的行锁，并不只是简单使用行锁机制，而是行锁配合多版本并发控制技术实现的行锁。 多版本并发控制并不是一个系统，而是一种类似于设计">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-6170a820e0bc8d2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-01-24T13:48:33.949Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高性能 Mysql 第一章第四节 多版本并发控制">
+<meta name="twitter:description" content="该章节我准备和第五章一起记录，第五章节主要写的是Mysql各个引擎的特点和介绍。 之所以要写到一起，也还有另一个原因，那就是第五章介绍到了InnoDB引擎的时候带给了我一些疑惑。 还是先说这一章的多版本并发控制。 ¶多版本并发控制 多版本并发控制(MVCC)。Innodb的行锁，并不只是简单使用行锁机制，而是行锁配合多版本并发控制技术实现的行锁。 多版本并发控制并不是一个系统，而是一种类似于设计">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-6170a820e0bc8d2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/24/高性能-Mysql-第一章第四节-多版本并发控制/">
+
+
+
+
+
+  <title>高性能 Mysql 第一章第四节 多版本并发控制 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/高性能-Mysql-第一章第四节-多版本并发控制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">高性能 Mysql 第一章第四节 多版本并发控制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T21:18:16+08:00">
+                2019-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/高性能mysql笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能mysql笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-6170a820e0bc8d2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>
+该章节我准备和第五章一起记录，第五章节主要写的是Mysql各个引擎的特点和介绍。<br>
+之所以要写到一起，也还有另一个原因，那就是第五章介绍到了InnoDB引擎的时候带给了我一些疑惑。<br>
+还是先说这一章的多版本并发控制。</p>
+<h2 id="多版本并发控制"><a class="header-anchor" href="#多版本并发控制">¶</a><strong>多版本并发控制</strong></h2>
+<p>多版本并发控制(MVCC)。Innodb的行锁，并不只是简单使用行锁机制，而是行锁配合多版本并发控制技术实现的行锁。<br><br>
+多版本并发控制并不是一个系统，而是一种类似于设计模式思想的东西，所以每个存储引擎对于实现MVCC的方式都不同。<br><br>
+它的优点:很好的解决了幻读问题。避免了很多情况下的加锁操作。<br>
+以下是重点原文:<br></p>
+<blockquote>
+<p>InnoDB 通过为每个数据行增加两个隐含值的方式来实现MVCC。这两个隐含值记录了行的创建时间，以及它的过期时间(或者叫删除时间)。<br><br>
+每一行都存储了事件发生时的系统版本号(我觉得叫做数据版本号更好理解),用来替代事件发生时的实际时间。<br><br>
+每一次，开始一个新事务时，版本号都会自动递增。每个事务都会保存它在开始时的&quot;当前系统版本的记录&quot;，而每个查询都会根据事务的版本号，检查每行数据的版本号。<br></p>
+</blockquote>
+<p>如何简单的理解多版本并发控制(我自己的理解)？即你开启一个事务，版本号就会递增一个，假设当前事务的数据片的版本号为25,那么，该事务中所做的数据片操作应该就是小于当前版本号中最大的版本号数据，即读到的数据为最贴近小于当前号版本的数据。<br><br>
+也就是说每一条数据都会有自己的版本号。在同一个事务中都只会对那个版本的数据进行处理，就解决了幻读问题。<br><br>
+MVCC减少了锁的开销，同时相对应的增加了额外数据保证版本号，要对版本号做检查和整理。拥有MVCC支持的行级加锁并发性能最高，同时开销也是最高的。<br></p>
+<h2 id="第五章的-innodb-带来的疑惑"><a class="header-anchor" href="#第五章的-innodb-带来的疑惑">¶</a><strong>第五章的 InnoDB 带来的疑惑</strong></h2>
+<p>以下是第五章的原文:</p>
+<blockquote>
+<p>InnoDB使用MVCC机制获取高并发性能，并且实现所有四个标准隔离级。它的默认隔离级为 PEPEATABLE READ(Pepeatable read)，在这个隔离级上，<em>它使用了间隙锁(Next-key locking)策略防止 &quot;幻读产生</em>&quot;:不仅对查询中读取的行进行加锁，而且还对索引结构中的间隙(Gaps)进行加锁，以防幻影插入。</p>
+</blockquote>
+<p>看到这里的时候，我就有点疑惑了，我记得这本书前面是写的MVCC解决的幻读问题啊。于是我往前翻，终于找到了这么一句话，以下是原文。</p>
+<blockquote>
+<p>InnoDB 和 Falcon 存储引擎通过多版本并发控制机制解决了幻读问题。</p>
+</blockquote>
+<p>那么到底是谁解决了幻读问题呢？</p>
+<p>为此我去搜索引擎上去看了一些人对于这个问题的看法。我觉得都有些牵强。从第一大章节来仔细看的话，我觉得书中描述是没错的。<br><br>
+MVCC多版本并发控制机制解决了幻读问题，这没错，间隙锁策略防止&quot;幻读&quot;问题的产生。也没错。实际上，这两句话描述的是两个事情！<br><br>
+多版本并发控制解决的是在同一个事务中的两次范围读取保证一致(因为保证了数据版本号一致，所以不用去管其他事务是否对该数据片进行了增删，因为一旦增删则会产生新的版本号，而当前进行查询的事务中始终会使用同一版本号的数据)！<br>
+间隙锁，解决的是我保证让你不会出现幻读情况！即你在事务期间，我给这个数据片的所有间隙，空隙，加上锁，甚至连索引都加上锁。让你没有机会产生幻读问题。<br><br>
+所以我认为还是MVCC解决了幻读问题。读了几篇别人的博客，谈到了间隙锁，发现间隙锁还会出现一些其他有趣的问题，在本篇中就不再阐述，等我看到间隙锁这一章节的时候，再来重开一篇记录。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/24/高性能-Mysql-第一章第三节-事务/" rel="next" title="高性能 Mysql 第一章第三节 事务">
+                <i class="fa fa-chevron-left"></i> 高性能 Mysql 第一章第三节 事务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多版本并发控制"><span class="nav-number">1.</span> <span class="nav-text">¶多版本并发控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章的-innodb-带来的疑惑"><span class="nav-number">2.</span> <span class="nav-text">¶第五章的 InnoDB 带来的疑惑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

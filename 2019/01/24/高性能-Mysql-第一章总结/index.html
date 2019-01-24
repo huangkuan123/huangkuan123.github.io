@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我买的是第二版的，这本书主要是以 Mysql 5 做的一些解读。 在此之前，我了解关于 Mysql 优化方面知识的渠道都是来自于一些博客，视频，这次打算系统性的学习了解 Mysql 的各方面知识。 第一章的名称为 Mysql 架构。 第一章主要谈的有这么几点，都是粗略的谈了一下。  逻辑架构 并发控制与锁 事务与隔离级别 多版本并发控制 Mysql 中的各种常见引擎  ¶逻辑架构 在本书中，谈到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能 Mysql 第一章第一节，Mysql的逻辑架构">
+<meta property="og:url" content="http://yoursite.com/2019/01/24/高性能-Mysql-第一章总结/index.html">
+<meta property="og:site_name" content="哔,韭菜园到了">
+<meta property="og:description" content="我买的是第二版的，这本书主要是以 Mysql 5 做的一些解读。 在此之前，我了解关于 Mysql 优化方面知识的渠道都是来自于一些博客，视频，这次打算系统性的学习了解 Mysql 的各方面知识。 第一章的名称为 Mysql 架构。 第一章主要谈的有这么几点，都是粗略的谈了一下。  逻辑架构 并发控制与锁 事务与隔离级别 多版本并发控制 Mysql 中的各种常见引擎  ¶逻辑架构 在本书中，谈到">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7027304-ffc3af6dc77688f5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-01-24T05:34:12.996Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高性能 Mysql 第一章第一节，Mysql的逻辑架构">
+<meta name="twitter:description" content="我买的是第二版的，这本书主要是以 Mysql 5 做的一些解读。 在此之前，我了解关于 Mysql 优化方面知识的渠道都是来自于一些博客，视频，这次打算系统性的学习了解 Mysql 的各方面知识。 第一章的名称为 Mysql 架构。 第一章主要谈的有这么几点，都是粗略的谈了一下。  逻辑架构 并发控制与锁 事务与隔离级别 多版本并发控制 Mysql 中的各种常见引擎  ¶逻辑架构 在本书中，谈到">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7027304-ffc3af6dc77688f5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/24/高性能-Mysql-第一章总结/">
+
+
+
+
+
+  <title>高性能 Mysql 第一章第一节，Mysql的逻辑架构 | 哔,韭菜园到了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">哔,韭菜园到了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/高性能-Mysql-第一章总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reset">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="哔,韭菜园到了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">高性能 Mysql 第一章第一节，Mysql的逻辑架构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T11:18:52+08:00">
+                2019-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/高性能mysql笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能mysql笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/7027304-ffc3af6dc77688f5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>我买的是第二版的，这本书主要是以 <code>Mysql 5</code> 做的一些解读。<br><br>
+在此之前，我了解关于 <code>Mysql</code> 优化方面知识的渠道都是来自于一些博客，视频，这次打算系统性的学习了解 <code>Mysql</code> 的各方面知识。<br><br>
+第一章的名称为 <code>Mysql 架构</code>。<br></p>
+<p>第一章主要谈的有这么几点，都是粗略的谈了一下。<br></p>
+<ul>
+<li>逻辑架构</li>
+<li>并发控制与锁</li>
+<li>事务与隔离级别</li>
+<li>多版本并发控制</li>
+<li>Mysql 中的各种常见引擎</li>
+</ul>
+<h2 id="逻辑架构"><a class="header-anchor" href="#逻辑架构">¶</a><strong>逻辑架构</strong></h2>
+<p>在本书中，谈到的逻辑架构分为了三层(由上至下)。</p>
+<ul>
+<li>客户端层</li>
+<li>核心层</li>
+<li>存储引擎层</li>
+</ul>
+<p>这三层跟我以前学到的有些不一样。之前学到的也是分为三层，第一层一样都是客户端层。<br><br>
+第二层是数据库管理引擎层，第三层为数据层。<br><br>
+显然之前学的是那位老师为了让视频更简单易懂，将核心层和存储引擎层放到了一起。<br><br>
+但实际上，根据我从书中所了解到的，如果要更专业的划分架构层，当然是核心层要和引擎层分开，因为他们又不同的功能，在实际架构中他们也是分层处理的(在这里我觉得还可以加个数据层，它存在于我们的磁盘或者内存中)。<br></p>
+<p>在这里客户端层主要负责连接，授权认证，安全等处理。<br><br>
+第二层核心层，它包含了 <code>Mysql</code> 的大多数核心内容，查询解析，分析，优化，缓存等内置函数都在这一层中完成。<br><br>
+存储引擎锁提供的功能也集中在这一层，例如存储过程，触发器，视图等。<br><br>
+第三层包含了存储引擎。负责提取和存储数据。服务器通过存储引擎API与引擎进行交互。这个API隐藏了存储引擎直接的区别，使得他们在查询层是透明的。<br><br>
+除了Innodb外，该层不会进行SQL解析，也不会互相通讯，只是简单的响应服务器请求(Innodb会解析外键定义，因为Mysql自身没有实现它，)。<br>
+<br><br>
+根据书中述描，我们能得知，是服务器是与第三层存储引擎进行通讯，那我就奇怪了，书中并没有说服务器层，在逻辑图中也没有提到，甚至在逻辑图中，第一层与第二层是有箭头指向的，而第二层与第三层没有箭头指向。在这里我是疑惑的。<br><br>
+于是我在搜索引擎中查询了一番，在很多人的博客中，他们给第二层与第三层中加了个箭头，也就意味着，书中所述的服务器就是第二层?在他们的博客中，第二层还有个玩意，叫查询执行引擎，正是这个引擎与与存储引擎发生交互的。<br><br>
+到底是怎样，还是得看后面书中有没有更多的解释了，现在还不能下断论，但是为了更好的阅读与学习，我在这里还是假设别人博客里所画的那幅图，是正确。<br></p>
+<h3 id="优化与执行"><a class="header-anchor" href="#优化与执行">¶</a><strong><em>优化与执行</em></strong></h3>
+<p><code>Mysql</code> 会在第二层解析查询语句，并创建一个内部数据结构(解析树)，然后对其进行各种优化。其中包括重写查询，决定查询的读表顺序，以及选择索引。<br><br>
+用户可以通过指令影响他的优化策略，也能要求服务器给出优化过程说明。<br><br>
+书中描述到，优化器并不关心某个表使用哪种存储引擎(因为第三层对于第二层来说是个黑盒，用API进行通讯)。但是，存储引擎又对第二层的优化过程存在影响，所以，第二层的优化器会请求第三层，为某种具体操作提供性能与开销方面的信息和表内数据统计信息。<br><br>
+例如，某些引擎可以支持对某类查询更有利的索引类型，后面能够了解更多。</p>
+<p>根据以往的知识，能够了解到，重复向Mysql发出两次查询指令，第二条查询速度会飞快。这是因为Mysql缓存了上次的查询结果和语句。<br><br>
+根据本节内容可以得知，正是第二层的缓存功能发挥了作用。由此也可以得知，如果缓存成功，将会减少哪些操作呢？<br><br>
+第一，当然是不用去第三层操作数据了，即减少了磁盘IO。第二，也不会再生成解析书了，没有解析书，当然也就不会再有优化了。而不用优化，当然也不用第二层与第三层再次进行通讯获取优化信息了。</p>
+<br>
+以上为第一章节的`Mysql`的逻辑架构粗解。
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="Reset 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="Reset 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/16/mysql优化之杂谈/" rel="next" title="mysql优化之乱炖">
+                <i class="fa fa-chevron-left"></i> mysql优化之乱炖
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/24/高性能-Mysql-第一章第二节-并发控制/" rel="prev" title="高性能 Mysql 第一章第二节 并发控制">
+                高性能 Mysql 第一章第二节 并发控制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpeg" alt="Reset">
+            
+              <p class="site-author-name" itemprop="name">Reset</p>
+              <p class="site-description motion-element" itemprop="description">不耻最后，即使慢，驰而不息，纵会落后，纵会失败，但一定可以达到他所向往的目标。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑架构"><span class="nav-number">1.</span> <span class="nav-text">¶逻辑架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化与执行"><span class="nav-number">1.1.</span> <span class="nav-text">¶优化与执行</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reset</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
